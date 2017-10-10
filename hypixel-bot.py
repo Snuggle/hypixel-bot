@@ -19,3 +19,16 @@ async def on_ready():
     print("Starting up...")
     await bot.change_presence(game=discord.Game(name='Cogs Example', type=1, url='twitch.tv/snugglysnuggle'))
     print("{bot.user.name} is now online! Version: {__version__}")
+    
+
+    if __name__ == '__main__':
+        for extension in initial_extensions:
+            try:
+                bot.load_extension(extension)
+            except Exception as e:
+                print(f'Failed to load extension {extension}.', file=sys.stderr)
+                traceback.print_exc()
+    print(f'Successfully logged in and booted...!')
+
+    
+bot.run(bot_token, bot=True, reconnect=True)
