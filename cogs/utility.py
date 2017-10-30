@@ -17,6 +17,7 @@ class UtilityCog:
         embedObject = discord.Embed(color=0xCDA040, title='Snuggle\'s Unofficial Hypixel Bot', description=description, url="https://sprinkly.net/hypixelbot")
         embedObject.set_image(url="http://i.imgur.com/OdU9KJM.png")
         await ctx.send(content=None, embed=embedObject)
+        
         embedObject = discord.Embed(color=0xCDA040, description='**Current commands list:**', url="https://sprinkly.net/hypixelbot")
         embedObject.add_field(name="hypixel-help", value="Shows usage information.")
         embedObject.add_field(name="hypixel-player `username`", value="Show information about a player. You can also @username#1234 them.")

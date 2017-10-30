@@ -4,6 +4,7 @@ __pycache__/
 *$py.class
 development.py
 keys.ini
+testdata.txt
 
 # C extensions
 *.so
@@ -101,3 +102,4 @@ ENV/
 
 # mypy
 .mypy_cache/
+testdata.txt
