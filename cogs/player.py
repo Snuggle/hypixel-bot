@@ -5,6 +5,7 @@ from time import strftime, gmtime, time
 from math import floor
 import asyncio
 import traceback
+cacheTime = 172800
 
 class PlayerCog:
     footerText = 'Hypixel Bot | Made with \u2764 by Snuggle' # \u2764 is a heart symbol.
@@ -18,6 +19,7 @@ class PlayerCog:
     @commands.command(name='player', aliases=['Player', 'PLAYER'])
     async def cog_player(self, ctx, player: str):
         await ctx.channel.trigger_typing()
+        hypixel.setCacheTime(cacheTime)
         try:
             startTime = time()
 
@@ -37,7 +39,7 @@ class PlayerCog:
             
             playerColour = self.rankColours.get(playerTitle, self.rankColours[playerRank['rank']])
 
-            embedObject = embedObject = discord.Embed(color=playerColour, title=f"{playerTitle} {playerInfo['displayName']}", \
+            embedObject = discord.Embed(color=playerColour, title=f"{playerTitle} {playerInfo['displayName']}", \
             description="\u200B", url=f"https://hypixel.net/player/{playerInfo['displayName']}") # \u200B is a zero-width space, to add padding.
 
             try:
@@ -86,7 +88,7 @@ class PlayerCog:
             embedObject.set_thumbnail(url="http://i.imgur.com/te3hSIG.png")
             embedObject.set_footer(text=f'{self.footerText} | {ctx.author}', icon_url=self.bot.user.avatar_url)
             messageObject = await ctx.send(content=None, embed=embedObject, delete_after=self.deleteTime)
-            print(f"hypixel-player {playerInfo['displayName']} took {time()-startTime} seconds to reply.")
+            print(f"{ctx.message.content} took {time()-startTime} seconds to reply.")
             await ctx.message.delete()
         except hypixel.PlayerNotFoundException:
             embedObject = discord.Embed(color=0x800000, description='Player not found.', url="https://sprinkly.net/hypixelbot")
@@ -99,6 +101,7 @@ class PlayerCog:
             await ctx.send(content=None, embed=embedObject, delete_after=self.deleteTime)
             await ctx.message.delete()
             traceback.print_exc()
+            print("Command: {ctx.message.content}")
 
 
 

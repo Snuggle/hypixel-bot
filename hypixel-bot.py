@@ -17,15 +17,16 @@ prefix = ['hypixel-', 'Hypixel-']
 
 startup_extensions = ('cogs.player', # These are the extensions that will be loaded.
                       'cogs.owner',
-                      'cogs.utility')
+                      'cogs.utility',
+                      'cogs.guild')
 
 bot = commands.Bot(command_prefix=prefix, description=__description__) # Create Discord bot.
 
 @bot.event
 async def on_ready(): # When the bot is ready, do the following...
-    print("Starting up...")
+    print("Bot ready! Setting game status.")
     await bot.change_presence(game=discord.Game(name='do hypixel-help!', type=1, url='https://twitch.tv/snugglysnuggle')) #Change bot's status to "Streaming"
-    print(f"{bot.user.name} is now online! Version: {__version__}") # Print to console that the bot is online.
+    print(f"{bot.user.name} v{__version__} is loading extensions!") # Print to console that the bot is online.
     
 
     if __name__ == '__main__': # Load all the extensions.
@@ -36,8 +37,8 @@ async def on_ready(): # When the bot is ready, do the following...
             except Exception as e:
                 print(f'Failed to load extension {extension}.', file=sys.stderr)
                 traceback.print_exc()
-    print(f'Successfully logged in and booted...!')
+    print(f'Successfully loaded extensions!')
 
 
-    
+print("Starting bot...")
 bot.run(bot_token, bot=True, reconnect=True) # Run the bot.
