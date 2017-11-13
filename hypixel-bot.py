@@ -15,6 +15,7 @@ hypixel.setKeys(hypixelKeys) # Set Hypixel-API key.
 bot_token = keys[1]
 
 prefix = ['hypixel-', 'Hypixel-']
+footerText = 'Hypixel Bot | Made with \u2764 by Snuggle' # \u2764 is a heart symbol.
 
 startup_extensions = ('cogs.player', # These are the extensions that will be loaded.
                       'cogs.owner',
@@ -22,6 +23,29 @@ startup_extensions = ('cogs.player', # These are the extensions that will be loa
                       'cogs.guild')
 
 bot = commands.Bot(command_prefix=prefix, description=__description__) # Create Discord bot.
+
+@bot.event
+async def on_command_error(ctx, error):
+    embedObject = discord.Embed(color=0x800000, description='An unknown error has occured.\nAn error report has been sent to my creator.', url="https://sprinkly.net/hypixelbot")
+    embedObject.set_footer(text=footerText, icon_url=bot.user.avatar_url)
+    await ctx.send(content=None, embed=embedObject, delete_after=30.0)
+
+    Snuggle = bot.get_user(201635058405212160)
+    errorString = traceback.format_exception(type(error), error, error.__traceback__)
+    errorString = '\n'.join(errorString)
+    errorString = errorString.split('The above exception was the direct cause of the following exception')[0]
+    embedObject = discord.Embed(color=0xFF5555, title=f"{bot.user.name} Error Report", description=f"```{errorString[:2000]}```")
+    embedObject.add_field(name="Message Content", value=f"`\u200B{ctx.message.content}`")
+    embedObject.add_field(name="Author", value=f"`\u200B{ctx.author}` | <@{ctx.author.id}>")
+    if ctx.guild is not None:
+        embedObject.add_field(name="Where", value=f"`\u200B{ctx.guild} > #{ctx.channel}`")
+        embedObject.add_field(name="Guild ID", value=f"`\u200B{ctx.guild.id}`")
+    else:
+        embedObject.add_field(name="Where", value=f"`\u200B{ctx.channel}`")
+    timeString = time.strftime("%d %b %Y @ %I:%M:%S%p", time.gmtime())
+    embedObject.set_footer(text=f"\u200B{footerText} | {timeString}", icon_url=bot.user.avatar_url)
+    print(Snuggle)
+    await Snuggle.send(content=None, embed=embedObject)
 
 @bot.event
 async def on_ready(): # When the bot is ready, do the following...

@@ -91,7 +91,6 @@ class GuildCog:
             crawledData = await self.crawlGuildPage(guildPageURL)
             guildBanner = crawledData['guildBanner']
             guildDescription = crawledData['guildDescription']
-            raise ValueError('DEBUG ERROR')
 
             for typeOfMember in guildMembers:
                 guildMembers[typeOfMember] = str(guildMembers[typeOfMember]).replace('\'', '').replace('[', '').replace(']', '')
@@ -106,7 +105,8 @@ class GuildCog:
                 
             if guildBanner.startswith('https://hypixel.net/data/guild_headers/'):
                 embedObject.set_image(url=guildBanner)
-
+                
+            embedObject.set_footer(text=f'{self.footerText} | {ctx.author}', icon_url=self.bot.user.avatar_url)
             messageObject = await ctx.send(content=None, embed=embedObject, delete_after=self.deleteTime)
             print(f"{ctx.message.content} took {time()-startTime} seconds to reply.")
             await soft_delete(ctx)
@@ -115,14 +115,6 @@ class GuildCog:
             embedObject.set_footer(text=self.footerText, icon_url=self.bot.user.avatar_url)
             await ctx.send(content=None, embed=embedObject, delete_after=self.deleteTime)
             await soft_delete(ctx)
-        except Exception as e:
-            embedObject = discord.Embed(color=0x800000, description='An unknown error has occured.\nAn error report has been sent to my creator.', url="https://sprinkly.net/hypixelbot")
-            embedObject.set_footer(text=self.footerText, icon_url=self.bot.user.avatar_url)
-            await ctx.send(content=None, embed=embedObject, delete_after=self.deleteTime)
-            await soft_delete(ctx)
-            Snuggle = self.bot.get_user(201635058405212160)
-            print(Snuggle)
-            Snuggle.send("{ctx.message.content} | {ctx.author} | {ctx.author.id}")
 
 def setup(bot):
     bot.add_cog(GuildCog(bot))

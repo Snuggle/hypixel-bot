@@ -101,13 +101,6 @@ class PlayerCog:
             embedObject.set_footer(text=self.footerText, icon_url=self.bot.user.avatar_url)
             await ctx.send(content=None, embed=embedObject, delete_after=self.deleteTime)
             await soft_delete(ctx)
-        except Exception as e:
-            embedObject = discord.Embed(color=0x800000, description='An unknown error has occured.\nAn error report has been sent to my creator.', url="https://sprinkly.net/hypixelbot")
-            embedObject.set_footer(text=self.footerText, icon_url=self.bot.user.avatar_url)
-            await ctx.send(content=None, embed=embedObject, delete_after=self.deleteTime)
-            await soft_delete(ctx)
-            traceback.print_exc()
-            print("Command: {ctx.message.content}")
 
 
 
