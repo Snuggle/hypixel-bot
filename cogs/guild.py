@@ -10,6 +10,12 @@ cacheTime = 864000
 
 guildCache = {}
 
+async def soft_delete(ctx):
+    try:
+        await ctx.message.delete()
+    except:
+        pass
+
 class GuildCog:
     footerText = 'Hypixel Bot | Made with \u2764 by Snuggle' # \u2764 is a heart symbol.
     deleteTime = 60.0
@@ -33,13 +39,13 @@ class GuildCog:
             soup = soup.find_all('blockquote', { "class" : "messageText baseHtml"})
             guildDescription = sub(r'<(.*?)>', '', str(soup)).replace('[', '').replace(']', '').replace('\n\n\n', '')
             guildDescription = sub(r'(.*)Guild Stats(.*)(\n*)([\s\S]*)', '', guildDescription).replace('&lt;', '<').replace('&gt;', '>') # Clean/remove Stats Boxes and add any angled brackets.
-            guildDescription = "\n**Description:** {}".format(guildDescription)
+            guildDescription = f"\n**Description:** {guildDescription}"
             print(guildDescription)
             for link in findall(r"data/guild_headers/(.*?)'", response):
-                guildBanner = 'https://hypixel.net/data/guild_headers/{}'.format(link)
+                guildBanner = f"https://hypixel.net/data/guild_headers/{link}"
                 print(guildBanner)
 
-            guildCache[guildPageURL] = {}
+            guildCache[guildPageURL] = {} # TODO: Cache by guild ID instead of URL. Many members in a guild and all of them have seperate atm.
             guildCache[guildPageURL]['banner'] = guildBanner
             guildCache[guildPageURL]['description'] = guildDescription
             guildCache[guildPageURL]['cacheTime'] = time() + cacheTime
@@ -57,6 +63,13 @@ class GuildCog:
             playerInfo = playerObject.getPlayerInfo()
 
             guildID = playerObject.getGuildID()
+            if guildID is None:
+                embedObject = discord.Embed(color=0x800000, description=f"{playerInfo['displayName']} is not in a guild!", url="https://sprinkly.net/hypixelbot")
+                embedObject.set_footer(text=self.footerText, icon_url=self.bot.user.avatar_url)
+                await ctx.send(content=None, embed=embedObject, delete_after=self.deleteTime)
+                print(f"{ctx.message.content} took {time()-startTime} seconds to reply.")
+                await ctx.message.delete()
+                return False
 
             guildObject = hypixel.Guild(guildID)
             guildName = guildObject.JSON['name']
@@ -78,38 +91,38 @@ class GuildCog:
             crawledData = await self.crawlGuildPage(guildPageURL)
             guildBanner = crawledData['guildBanner']
             guildDescription = crawledData['guildDescription']
+            raise ValueError('DEBUG ERROR')
 
             for typeOfMember in guildMembers:
                 guildMembers[typeOfMember] = str(guildMembers[typeOfMember]).replace('\'', '').replace('[', '').replace(']', '')
                 # Convert each list in guildMembers to a string.
 
             embedObject = discord.Embed(color=0xCDA040, title=guildName, description=f"\u200B{guildDescription}", url=guildPageURL)
-            embedObject.add_field(name="Guild Master", value='`{}`'.format(guildMembers['GUILDMASTER'][:2046]), inline=False)
-            embedObject.add_field(name="Officers", value='`{}`'.format(guildMembers['OFFICER'][:2046]), inline=False)
-            embedObject.add_field(name="Members", value='`{}`'.format(guildMembers['MEMBER'][:1022]), inline=False)
-            if len(guildMembers['MEMBER']) > 1022: # If too many characters to fit in a Discord.field, split into two fields
-                embedObject.add_field(name="Members (Cont.)", value='`{}`'.format(guildMembers['MEMBER'][1022:]), inline=False)
+            embedObject.add_field(name="Guild Master", value=f"`\u200B{guildMembers['GUILDMASTER'][:2045]}`", inline=False)
+            embedObject.add_field(name="Officers", value=f"`\u200B{guildMembers['OFFICER'][:2045]}`", inline=False)
+            embedObject.add_field(name="Members", value=f"`\u200B{guildMembers['MEMBER'][:1021]}`", inline=False)
+            if len(guildMembers['MEMBER']) > 1021: # If too many characters to fit in a Discord.field, split into two fields
+                embedObject.add_field(name="Members (Cont.)", value=f"`{guildMembers['MEMBER'][1021:]}`", inline=False)
                 
             if guildBanner.startswith('https://hypixel.net/data/guild_headers/'):
                 embedObject.set_image(url=guildBanner)
 
             messageObject = await ctx.send(content=None, embed=embedObject, delete_after=self.deleteTime)
             print(f"{ctx.message.content} took {time()-startTime} seconds to reply.")
-            await ctx.message.delete()
+            await soft_delete(ctx)
         except hypixel.PlayerNotFoundException:
             embedObject = discord.Embed(color=0x800000, description='Player not found.', url="https://sprinkly.net/hypixelbot")
             embedObject.set_footer(text=self.footerText, icon_url=self.bot.user.avatar_url)
             await ctx.send(content=None, embed=embedObject, delete_after=self.deleteTime)
-            await ctx.message.delete()
+            await soft_delete(ctx)
         except Exception as e:
             embedObject = discord.Embed(color=0x800000, description='An unknown error has occured.\nAn error report has been sent to my creator.', url="https://sprinkly.net/hypixelbot")
             embedObject.set_footer(text=self.footerText, icon_url=self.bot.user.avatar_url)
             await ctx.send(content=None, embed=embedObject, delete_after=self.deleteTime)
-            await ctx.message.delete()
-            Snuggle = discord.User(id="201635058405212160") # FIXME
-            Snuggle.send("{ctx.message.content}")
-            traceback.print_exc()
-            print("Command: {ctx.message.content}")
+            await soft_delete(ctx)
+            Snuggle = self.bot.get_user(201635058405212160)
+            print(Snuggle)
+            Snuggle.send("{ctx.message.content} | {ctx.author} | {ctx.author.id}")
 
 def setup(bot):
     bot.add_cog(GuildCog(bot))

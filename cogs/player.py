@@ -7,6 +7,12 @@ import asyncio
 import traceback
 cacheTime = 172800
 
+async def soft_delete(ctx):
+    try:
+        await ctx.message.delete()
+    except:
+        pass
+
 class PlayerCog:
     footerText = 'Hypixel Bot | Made with \u2764 by Snuggle' # \u2764 is a heart symbol.
     rankColours = {'MVP': 0x55FFFF, 'VIP': 0x55FF55, 'MVP+': 0x55FFFF, 'VIP+': 0x55FF55, 'Non': 0xAAAAAA, 'Helper': 0x5555FF, 'Moderator': 0x00AA00, 'Admin': 0xFF5555, 'Youtuber': 0xFFAA00, 'Build Team': 0x00AAAA, 'Owner': 0xFF5555, 'None': 0xAAAAAA, 'Mixer': 0x00AAAA}
@@ -52,7 +58,7 @@ class PlayerCog:
                 if discordID is not None:
                     discordID = discordID.id
                     discordName = f'<@{discordID}>'
-            except KeyError:
+            except:
                 discordName = "`Unlinked`"
 
 
@@ -89,17 +95,17 @@ class PlayerCog:
             embedObject.set_footer(text=f'{self.footerText} | {ctx.author}', icon_url=self.bot.user.avatar_url)
             messageObject = await ctx.send(content=None, embed=embedObject, delete_after=self.deleteTime)
             print(f"{ctx.message.content} took {time()-startTime} seconds to reply.")
-            await ctx.message.delete()
+            await soft_delete(ctx)
         except hypixel.PlayerNotFoundException:
             embedObject = discord.Embed(color=0x800000, description='Player not found.', url="https://sprinkly.net/hypixelbot")
             embedObject.set_footer(text=self.footerText, icon_url=self.bot.user.avatar_url)
             await ctx.send(content=None, embed=embedObject, delete_after=self.deleteTime)
-            await ctx.message.delete()
+            await soft_delete(ctx)
         except Exception as e:
             embedObject = discord.Embed(color=0x800000, description='An unknown error has occured.\nAn error report has been sent to my creator.', url="https://sprinkly.net/hypixelbot")
             embedObject.set_footer(text=self.footerText, icon_url=self.bot.user.avatar_url)
             await ctx.send(content=None, embed=embedObject, delete_after=self.deleteTime)
-            await ctx.message.delete()
+            await soft_delete(ctx)
             traceback.print_exc()
             print("Command: {ctx.message.content}")
 
