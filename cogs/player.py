@@ -72,13 +72,15 @@ class PlayerCog:
                 tempGuild = hypixel.Guild(GuildID)
                 GuildID = tempGuild.JSON['name']
 
+            firstLogin = playerInfo['firstLogin']
+            lastLogin = playerInfo['lastLogin']
+
             try: # Optional formatting
                 firstLogin = strftime("%Y-%m-%d", gmtime(int(playerInfo['firstLogin']) / 1000.0))
                 lastLogin = strftime("%Y-%m-%d", gmtime(int(playerInfo['lastLogin']) / 1000.0))
                 playerInfo['karma'] = f"{int(playerInfo['karma']):,}"
             except:
                 pass
-
 
             embedObject.add_field(name="Level", value=f"`{floor(playerInfo['networkLevel']*100)/100}`") # Floor the network level to 2dp.
             embedObject.add_field(name="Minecraft Version", value=f"`{playerInfo['mcVersionRp']}`")     # E.g: 368.86864043126684 -> 368.68
@@ -94,9 +96,10 @@ class PlayerCog:
             embedObject.set_thumbnail(url="http://i.imgur.com/te3hSIG.png")
             embedObject.set_footer(text=f'{self.footerText} | {ctx.author}', icon_url=self.bot.user.avatar_url)
             messageObject = await ctx.send(content=None, embed=embedObject, delete_after=self.deleteTime)
-            print(f"{ctx.message.content} took {time()-startTime} seconds to reply.")
+            print(f" > Replied in {round(time()-startTime, 2)}s.")
             await soft_delete(ctx)
         except hypixel.PlayerNotFoundException:
+            print(f" > Player not found.")
             embedObject = discord.Embed(color=0x800000, description='Player not found.', url="https://sprinkly.net/hypixelbot")
             embedObject.set_footer(text=self.footerText, icon_url=self.bot.user.avatar_url)
             await ctx.send(content=None, embed=embedObject, delete_after=self.deleteTime)

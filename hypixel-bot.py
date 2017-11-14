@@ -8,6 +8,7 @@ import traceback
 import sys
 import time
 import hypixel # Import all the things necessary
+import difflib
 
 keys = open("keys.ini", "r").readlines() # Get keys and set them all from file.
 hypixelKeys = [keys[0].replace('\n', '')]
@@ -22,10 +23,30 @@ startup_extensions = ('cogs.player', # These are the extensions that will be loa
                       'cogs.utility',
                       'cogs.guild')
 
-bot = commands.Bot(command_prefix=prefix, description=__description__) # Create Discord bot.
+valid_commands = ['hypixel-player username', 'hypixel-guild username', 'hypixel-help']
+
+bot = commands.AutoShardedBot(command_prefix=prefix, description=__description__, shard_count=3, shard_ids=[0, 1, 2]) # Create Discord bot.
+
+@bot.event
+async def on_command(ctx):
+    try:
+        print(f"#{ctx.author.guild.shard_id} | {ctx.author} > {ctx.message.content}", end='')
+    except AttributeError:
+        print(f"~0 | {ctx.author} > {ctx.message.content}", end='')
 
 @bot.event
 async def on_command_error(ctx, error):
+    ignored = (commands.CommandNotFound, commands.UserInputError)
+    error = getattr(error, 'original', error)
+    if isinstance(error, ignored):
+        closestCommand = difflib.get_close_matches(ctx.message.content, valid_commands, n=len(valid_commands), cutoff=0.0)
+        print(f"{ctx.author} > {ctx.message.content} > Command not found. Closest match: {closestCommand[0]}")
+        embedObject = discord.Embed(color=0x800000, description=f"Unknown command! Did you mean `{closestCommand[0]}`?", url="https://sprinkly.net/hypixelbot")
+        embedObject.set_footer(text=footerText, icon_url=bot.user.avatar_url)
+        await ctx.send(content=None, embed=embedObject, delete_after=15.0)
+        return
+
+    print(f"{ctx.author} > {ctx.message.content} > Error handled.")
     embedObject = discord.Embed(color=0x800000, description='An unknown error has occured.\nAn error report has been sent to my creator.', url="https://sprinkly.net/hypixelbot")
     embedObject.set_footer(text=footerText, icon_url=bot.user.avatar_url)
     await ctx.send(content=None, embed=embedObject, delete_after=30.0)
@@ -44,12 +65,11 @@ async def on_command_error(ctx, error):
         embedObject.add_field(name="Where", value=f"`\u200B{ctx.channel}`")
     timeString = time.strftime("%d %b %Y @ %I:%M:%S%p", time.gmtime())
     embedObject.set_footer(text=f"\u200B{footerText} | {timeString}", icon_url=bot.user.avatar_url)
-    print(Snuggle)
     await Snuggle.send(content=None, embed=embedObject)
 
 @bot.event
 async def on_ready(): # When the bot is ready, do the following...
-    print(f"Hello, there! I am {bot.user.name} v{__version__}.")
+    print(f"Hello, there! I am {bot.user.name} v{__version__}!")
     await bot.change_presence(game=discord.Game(name='do hypixel-help!', type=1, url='https://twitch.tv/snugglysnuggle')) #Change bot's status to "Streaming"
     print(f"Please wait while I load my extensions: ", end='') # Print to console that the bot is online.
 
@@ -69,6 +89,10 @@ async def on_ready(): # When the bot is ready, do the following...
     print(']')
     print(f"Using hypixel.py v{hypixel.__version__}.")
     print('Successfully started up and listening for commands...\n')
+
+@bot.event
+async def on_shard_ready(shard_id):
+    print(f"Shard is ready!")
 
 
 print("Beep, boop!")

@@ -1,5 +1,5 @@
 from discord.ext import commands
-
+import discord
 
 class OwnerCog:
 
@@ -47,12 +47,28 @@ class OwnerCog:
     @commands.command(name='forcestop')
     @commands.is_owner()
     async def cog_forcestop(self, ctx):
-        ctx.send("Goodbye!")
+        await ctx.send("Goodbye!")
         exit()
+
+    @commands.command(name='setgame')
+    @commands.is_owner()
+    async def cog_setgame(self, ctx):
+        streamingBool = 0
+        urlString = None
+        message = ctx.message.content.replace('hypixel-setgame ', '').split(', ')
+        if 'twitch.tv' in ctx.message.content:
+            streamingBool = 1
+            urlString = message[2]
+        status = getattr(discord.Status, message[0])
+        game = discord.Game(name=f"{message[1]}", type=streamingBool, url=urlString)
+
+        await self.bot.change_presence(game=game, status=status, afk=False)
+        print(f" > Changed presence to {message[1]}.")
 
     @commands.command(name='test')
     async def cog_test(self, ctx):
-        ctx.send("Tested!")
+        embedObject = discord.Embed(color=0xCDA040, title="Hypixel-bot Ping", description=f"A ping took {round(self.bot.latency*1000, 2)} milliseconds.")
+        await ctx.send(content=None, embed=embedObject, delete_after=10.0)
 
 
 

@@ -37,8 +37,10 @@ class UtilityCog:
         embedObject.set_thumbnail(url="http://i.imgur.com/te3hSIG.png")
         try:
             await ctx.author.send(content=None, embed=embedObject)
+            print(f" > Sent help to user via DM.")
         except:
             await ctx.send(content=None, embed=embedObject, delete_after=self.deleteTime)
+            print(f" > Sent help to server.")
 
 def setup(bot):
     bot.add_cog(UtilityCog(bot))
