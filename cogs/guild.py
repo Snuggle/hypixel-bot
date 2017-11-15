@@ -68,7 +68,7 @@ class GuildCog:
                 embedObject = discord.Embed(color=0x800000, description=f"{playerInfo['displayName']} is not in a guild!", url="https://sprinkly.net/hypixelbot")
                 embedObject.set_footer(text=self.footerText, icon_url=self.bot.user.avatar_url)
                 await ctx.send(content=None, embed=embedObject, delete_after=self.deleteTime)
-                await ctx.message.delete()
+                await soft_delete(ctx)
                 return False
 
             guildObject = hypixel.Guild(guildID)
