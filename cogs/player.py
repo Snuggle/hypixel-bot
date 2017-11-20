@@ -50,6 +50,7 @@ class PlayerCog:
             discordID = None
         values_to_insert = [playerInfo['uuid'], playerInfo['displayName'], discordID, discordName, 0]
         values_to_update = [playerInfo['displayName'], discordID, discordName, playerInfo['uuid']]
+        values_to_update_noID = [playerInfo['displayName'], discordName, playerInfo['uuid']]
         connection = sqlite3.connect("hypixel.db")
         cursor = connection.cursor()
         try:
@@ -58,11 +59,18 @@ class PlayerCog:
                                 VALUES (?, ?, ?, ?, ?)""", (values_to_insert,))
             print(" > inserted to database", end='')
         except sqlite3.IntegrityError:
-            cursor.executemany("""
-                                UPDATE HypixelPlayers
-                                SET Username=?, DiscordID=?, DiscordUsername=?
-                                WHERE UUID=?""", (values_to_update,))
-            print(" > updated database", end='')
+            if discordID is None:
+                cursor.executemany("""
+                                    UPDATE HypixelPlayers
+                                    SET Username=?, DiscordUsername=?
+                                    WHERE UUID=?""", (values_to_update_noID,))
+                print(" > updated database", end='')
+            else:
+                cursor.executemany("""
+                                    UPDATE HypixelPlayers
+                                    SET Username=?, DiscordID=?, DiscordUsername=?
+                                    WHERE UUID=?""", (values_to_update,))
+                print(" > updated database", end='')
         connection.commit()
         cursor.close()
         connection.close()
@@ -86,6 +94,8 @@ class PlayerCog:
 
             for data in self.dataItems:
                 if data == "socialMedia":
+                    if 'socialMedia' not in playerInfo:
+                        playerInfo['socialMedia'] = {}
                     if 'links' not in playerInfo['socialMedia']:
                         playerInfo['socialMedia']['links'] = {}
                     for link in self.socialLinks:

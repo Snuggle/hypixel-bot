@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 __description__ = """ Unofficial Hypixel Discord Bot, Made by Snuggle. """
-__version__ = '0.0.1'
+__version__ = '0.0.2'
+
+# Test, please ignore.
 
 import discord
 from discord.ext import commands
