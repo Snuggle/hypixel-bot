@@ -2,7 +2,7 @@
 __description__ = """ Unofficial Hypixel Discord Bot, Made by Snuggle. """
 __version__ = '0.0.2'
 
-# Test, please ignore.
+# Test, please ignore 2.
 
 import discord
 from discord.ext import commands
