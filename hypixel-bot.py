@@ -2,8 +2,6 @@
 __description__ = """ Unofficial Hypixel Discord Bot, Made by Snuggle. """
 __version__ = '0.0.2'
 
-# Test, please ignore 2.
-
 import discord
 from discord.ext import commands
 import traceback
@@ -22,7 +20,7 @@ footerText = 'Hypixel Bot | Made with \u2764 by Snuggle' # \u2764 is a heart sym
 
 startup_extensions = ('cogs.player', # These are the extensions that will be loaded.
                       'cogs.owner',
-                      'cogs.utility',
+                      'cogs.help',
                       'cogs.guild')
 
 valid_commands = ['hypixel-player username', 'hypixel-guild username', 'hypixel-help']

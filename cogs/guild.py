@@ -49,7 +49,7 @@ class GuildCog:
             guildCache[guildPageURL]['banner'] = guildBanner
             guildCache[guildPageURL]['description'] = guildDescription
             guildCache[guildPageURL]['cacheTime'] = time() + cacheTime
-            
+
         return({'guildBanner': guildBanner, 'guildDescription': guildDescription})
 
     @commands.command(name='guild', aliases=['Guild', 'GUILD'])
@@ -86,7 +86,6 @@ class GuildCog:
 
             guildDescription = "None"
             guildPageURL = f"https://hypixel.net/guilds/{guildID}"
-            #guildMembers = {'MEMBER': ['Rackals', 'Andyq9433', 'Tezech', 'proweaboo', 'Chrli', 'Yharon', 'MoistySalt', 'lord_dark166', 'BarryK', 'AUNIQUE', 'Liqo', 'xZoomPvp', 'xForced', 'frgjo', 'agentfitz', 'ChillDylanC', 'ValseHoop', 'ISmellLikeBacon', 'iMeap', 'KamerPlant', 'Niicolo', 'TheLapisBlock', '_Childish_', 'OldManCrinkles', 'PedrosTacos', 'QSweet', 'lellort', 'TindinPlayz', 'dcp9', 'xBloodyPanda', 'ZetieTheTeddy', 'hqn', 'Aixe', 'ohDroze', 'Legoblaze_', 'Precisionings', 'Bjorb', 'AwesomeArv', 'Cuty', '512CPS', 'Alegbra', 'Veik', 'WolfKatt', 'Cosru', 'Decrupt', 'Erjan', 'HeLLing', 'skyerzz', 'Sayonara', 'Dont_Ban_Me', 'AFoodEater', 'Zyperiox', 'Tediosito', 'JVSgamer', 'Deesal', 'LonelyRev', 'Birds_wings', '9x8', 'PacifyClove', 'InfectedAlpha', 'Sophie_OGrady', 'DiamondKiwi', 'iDezi', 'DuhGeo', 'Jild', 'oSkywars', 'JaceHerondale', 'Tringo', 'CalOtter', 'PriscillaPS', 'Pixiest', 'Snuggle'], 'OFFICER': ['JakeDaaBud', 'Flafkas', 'Thomas8454', 'MikePlaysMc_', 'Jellycat', 'TheNeonPikachu', 'ToadBunny', 'iPolarr', 'Bembo', 'Dimply'], 'GUILDMASTER': ['Ellxa']}
 
             crawledData = await self.crawlGuildPage(guildPageURL)
             guildBanner = crawledData['guildBanner']
@@ -102,10 +101,10 @@ class GuildCog:
             embedObject.add_field(name="Members", value=f"`\u200B{guildMembers['MEMBER'][:1021]}`", inline=False)
             if len(guildMembers['MEMBER']) > 1021: # If too many characters to fit in a Discord.field, split into two fields
                 embedObject.add_field(name="Members (Cont.)", value=f"`{guildMembers['MEMBER'][1021:]}`", inline=False)
-                
+
             if guildBanner.startswith('https://hypixel.net/data/guild_headers/'):
                 embedObject.set_image(url=guildBanner)
-                
+
             embedObject.set_footer(text=f'{self.footerText} | {ctx.author}', icon_url=self.bot.user.avatar_url)
             messageObject = await ctx.send(content=None, embed=embedObject, delete_after=self.deleteTime)
             print(f" > Replied in {round(time()-startTime, 2)}s.")

@@ -111,7 +111,7 @@ class PlayerCog:
                 playerTitle = playerTitle.replace(']', '')
             except KeyError:
                 playerTitle = playerRank['rank']
-            
+
             playerColour = self.rankColours.get(playerTitle, self.rankColours[playerRank['rank']])
 
             embedObject = discord.Embed(color=playerColour, title=f"{playerTitle} {playerInfo['displayName']}", \

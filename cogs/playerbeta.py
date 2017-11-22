@@ -7,16 +7,20 @@ import asyncio
 
 # CREATE A DICTIONARY OF ALL GETPLAYERINFO() REQUESTS TO CACHE
 
-class PlayerCog:
+class PlayerCard:
     footerText = 'Hypixel Bot | Made with \u2764 by Snuggle' # \u2764 is a heart symbol.
     rankColours = {'MVP': 0x55FFFF, 'VIP': 0x55FF55, 'Non': 0xAAAAAA, 'Helper': 0x5555FF, 'Moderator': 0x00AA00, 'Admin': 0xFF5555, 'Youtuber': 0xFFAA00, 'Build Team': 0x00AAAA}
     dataItems = ['karma', 'firstLogin', 'lastLogin', 'mcVersionRp', 'networkExp', 'displayName', 'rank', 'networkLevel']
+
+    
 
     def __init__(self, bot):
         self.bot = bot
 
     async def do_buttons(self, messageObject, playerObject, ctx):
         await messageObject.add_reaction("\U00002139")
+        await messageObject.add_reaction("\U0001F3AE")
+        await messageObject.add_reaction("\U0001F4AC")
         playerInfo = playerObject.getPlayerInfo()
         playerRank = playerInfo['rank']
         playerColour = self.rankColours[playerRank['rank'].replace('+', '')]
@@ -30,12 +34,20 @@ class PlayerCog:
         else:
             await messageObject.clear_reactions()
             embedObject = embedObject = discord.Embed(color=0xFFAA00, title=f"{playerRank['rank']} {playerInfo['displayName']}", \
-            description="\u200B", url=f"https://hypixel.net/player/{playerInfo['displayName']}") # \u200B is a zero-width space, to add padding.
+            description="\u200B Please select a game from the list below!", url=f"https://hypixel.net/player/{playerInfo['displayName']}") # \u200B is a zero-width space, to add padding.
+            embedObject.add_field(name="<:ender_eye:382805951813517312>", value="Skywars")
+            embedObject.add_field(name="<:slimeball:382806071137402890>", value="Arcade Games")
+            embedObject.add_field(name="Emoji", value="Etc...")
             embedObject.set_thumbnail(url="http://i.imgur.com/te3hSIG.png")
             embedObject.set_footer(text=f"{self.footerText} | UUID: {playerInfo['uuid']}", icon_url=self.bot.user.avatar_url)
 
             await messageObject.edit(embed=embedObject)
-    
+            await messageObject.add_reaction(":diamond_sword:382807356334931968")
+            await messageObject.add_reaction(":slimeball:382806071137402890")
+            await messageObject.add_reaction(":ender_eye:382805951813517312")
+            await messageObject.add_reaction(":apple_golden:382805390682750976")
+            await messageObject.add_reaction(":stone_axe:382806557282402305")
+
     @commands.command(name='player', aliases=['Player', 'PLAYER'])
     async def cog_player(self, ctx, player: str):
         await ctx.channel.trigger_typing()
@@ -91,15 +103,13 @@ class PlayerCog:
             embedObject.add_field(name="Guild", value=f"`{GuildID}`")
             embedObject.add_field(name="Karma", value=f"`{playerInfo['karma']}`")
             embedObject.add_field(name="First / Last Login", value=f"`{firstLogin} / {lastLogin}`")
-            embedObject.add_field(name="Discord", value=f"{discordName}")
-            embedObject.add_field(name="Forums", value=f"{forumsLink}", inline=False)
             embedObject.set_image(url=f"https://visage.surgeplay.com/full/256/{playerInfo['displayName']}")
             embedObject.set_thumbnail(url="http://i.imgur.com/te3hSIG.png")
             embedObject.set_footer(text=f'{self.footerText} | {ctx.author}', icon_url=self.bot.user.avatar_url)
             messageObject = await ctx.send(content=None, embed=embedObject, delete_after=60.0)
             print(f"hypixel-player {playerInfo['displayName']} took {time()-startTime} seconds to reply.")
             await ctx.message.delete()
-            
+
             await self.do_buttons(messageObject, playerObject, ctx)
         except hypixel.PlayerNotFoundException:
             embedObject = discord.Embed(color=0x800000, description='Player not found.', url="https://sprinkly.net/hypixelbot")
@@ -109,4 +119,4 @@ class PlayerCog:
 
 
 def setup(bot):
-    bot.add_cog(PlayerCog(bot))
+    bot.add_cog(PlayerCard(bot))
