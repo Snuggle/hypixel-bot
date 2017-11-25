@@ -12,7 +12,9 @@ class PlayerCard:
     rankColours = {'MVP': 0x55FFFF, 'VIP': 0x55FF55, 'Non': 0xAAAAAA, 'Helper': 0x5555FF, 'Moderator': 0x00AA00, 'Admin': 0xFF5555, 'Youtuber': 0xFFAA00, 'Build Team': 0x00AAAA}
     dataItems = ['karma', 'firstLogin', 'lastLogin', 'mcVersionRp', 'networkExp', 'displayName', 'rank', 'networkLevel']
 
-    
+    messageObject = None
+    playerObject = None
+
 
     def __init__(self, bot):
         self.bot = bot

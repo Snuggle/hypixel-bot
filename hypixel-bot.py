@@ -52,6 +52,7 @@ async def on_command_error(ctx, error):
     await ctx.send(content=None, embed=embedObject, delete_after=30.0)
 
     Snuggle = bot.get_user(201635058405212160)
+    traceback.print_exception(type(error), error, error.__traceback__)
     errorString = traceback.format_exception(type(error), error, error.__traceback__)
     errorString = '\n'.join(errorString)
     errorString = errorString.split('The above exception was the direct cause of the following exception')[0]
