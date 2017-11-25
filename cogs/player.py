@@ -98,6 +98,7 @@ class PlayerCard:
             playerColour = self.rankColours.get(playerTitle, self.rankColours[playerRank['rank']])
             self.playerInfo['playerColour'] = playerColour
             self.playerInfo['playerTitle'] = playerTitle
+            self.playerInfo['displayName'] = self.playerInfo['displayName'].replace('_', '\_') # Fix https://github.com/Snuggle/hypixel-bot/issues/1
 
             embedObject = discord.Embed(color=playerColour, title=f"{playerTitle} {self.playerInfo['displayName']}", \
             description="\u200B", url=f"https://hypixel.net/player/{self.playerInfo['displayName']}") # \u200B is a zero-width space, to add padding.
