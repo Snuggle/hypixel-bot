@@ -47,6 +47,7 @@ class PlayerCard:
                         pass
 
                 if success = False:
+                    pass
                     # Add warning saying the user has no stats in this game.
 
                 embedObject.set_thumbnail(url=reaction.emoji.url)
