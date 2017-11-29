@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 __description__ = """ Unofficial Hypixel Discord Bot, Made by Snuggle. """
-__version__ = '0.0.2'
+__version__ = '0.0.3'
 
 import discord
 from discord.ext import commands
@@ -36,7 +36,7 @@ async def on_command(ctx):
 
 @bot.event
 async def on_command_error(ctx, error):
-    ignored = (commands.CommandNotFound, commands.UserInputError)
+    ignored = (commands.CommandNotFound, commands.UserInputError, discord.errors.NotFound)
     error = getattr(error, 'original', error)
     if isinstance(error, ignored):
         closestCommand = difflib.get_close_matches(ctx.message.content, valid_commands, n=len(valid_commands), cutoff=0.0)

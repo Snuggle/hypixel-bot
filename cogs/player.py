@@ -1,11 +1,14 @@
 import discord
 from discord.ext import commands
 import hypixel
+import json
 from time import strftime, gmtime, time
 from math import floor
 import asyncio
 from lib import database
 cacheTime = 172800
+
+gameStats = json.load(open('./lib/gameStats.json'))
 
 async def soft_delete(ctx):
     try:
@@ -26,21 +29,78 @@ class PlayerCard:
     def __init__(self, bot):
         self.bot = bot
 
+    async def generateGameCard(self, messageObject, ctx, reaction):
+        for game in gameStats:
+            if gameStats[game]['icon_id'] == reaction.emoji.id: # If true, correct game found.
+                embedObject = discord.Embed(color=0xFFAA00, title=f"{self.playerInfo['playerTitle']} {self.playerInfo['displayName']} > {game}", \
+                description=f"{gameStats[game]['description']}", url=f"https://hypixel.net/player/{self.playerInfo['displayName']}")
+
+                apiname = gameStats[game]['APIname']
+
+                success = False
+
+                for statistic in gameStats[game]['statsToDisplay']:
+                    try:
+                        embedObject.add_field(name=f"{statistic.replace('_', ' ').title()}", value=f"{self.playerObject.JSON['stats'][apiname][statistic]}")
+                        success = True
+                    except KeyError:
+                        pass
+
+                if success = False:
+                    # Add warning saying the user has no stats in this game.
+
+                embedObject.set_thumbnail(url=reaction.emoji.url)
+                embedObject.set_footer(text=f"{self.footerText}", icon_url=self.bot.user.avatar_url)
+                await messageObject.edit(embed=embedObject)
+                await messageObject.add_reaction("\U00002B05")
+
+                def reaction_info_check(reaction, user):
+                    return user == ctx.author
+
+                try:
+                    reaction, user = await self.bot.wait_for('reaction_add', timeout=30.0, check=reaction_info_check)
+                except asyncio.TimeoutError:
+                    await messageObject.clear_reactions()
+                else:
+                    await messageObject.clear_reactions()
+                    await self.gameStats(messageObject, ctx)
+                    print(reaction.emoji)
+                    if reaction.emoji == '\U00002B05':
+                        await self.gameStats(messageObject, ctx)
+
     async def gameStats(self, messageObject, ctx):
         embedObject = embedObject = discord.Embed(color=0xFFAA00, title=f"{self.playerInfo['playerTitle']} {self.playerInfo['displayName']} > Games", \
-        description="Please select a game from the list below!", url=f"https://hypixel.net/player/{self.playerInfo['displayName']}") # \u200B is a zero-width space, to add padding.
-        embedObject.add_field(name="<:ender_eye:382805951813517312>", value="Skywars")
-        embedObject.add_field(name="<:slimeball:382806071137402890>", value="Arcade Games")
-        embedObject.add_field(name="Emoji", value="Etc...")
+        description="Please select a game from the list below!", url=f"https://hypixel.net/player/{self.playerInfo['displayName']}")
+        for game in gameStats:
+            print(game)
+            print(gameStats[game]['icon_uri'])
+            embedObject.add_field(name=f"{gameStats[game]['icon_uri']}", value=game)
         embedObject.set_thumbnail(url="http://i.imgur.com/te3hSIG.png")
         embedObject.set_footer(text=f"{self.footerText}", icon_url=self.bot.user.avatar_url)
 
         await messageObject.edit(embed=embedObject)
-        await messageObject.add_reaction(":diamond_sword:382807356334931968")
-        await messageObject.add_reaction(":slimeball:382806071137402890")
-        await messageObject.add_reaction(":ender_eye:382805951813517312")
-        await messageObject.add_reaction(":apple_golden:382805390682750976")
-        await messageObject.add_reaction(":stone_axe:382806557282402305")
+
+
+        await messageObject.add_reaction("\U00002B05")
+        for game in gameStats:
+            await messageObject.add_reaction(gameStats[game]['icon_uri'].replace('<', '').replace('>', ''))
+
+        def reaction_info_check(reaction, user):
+            return user == ctx.author
+
+        try:
+            reaction, user = await self.bot.wait_for('reaction_add', timeout=30.0, check=reaction_info_check)
+        except asyncio.TimeoutError:
+            await messageObject.clear_reactions()
+        else:
+            await messageObject.clear_reactions()
+            print('flah')
+            print(reaction.emoji)
+            if reaction.emoji == '\U00002B05':
+                await self.PlayerProfile.callback(self=self, ctx=ctx, player=self.playerObject.UUID, edit=True, messageObject=messageObject)
+            else:
+                await self.generateGameCard(messageObject, ctx, reaction)
+
 
     async def do_buttons(self, messageObject, ctx):
         await messageObject.add_reaction("\U00002139")
@@ -59,8 +119,9 @@ class PlayerCard:
 
 
     @commands.command(name='player', aliases=['Player', 'PLAYER'])
-    async def PlayerCard(self, ctx, player: str):
-        await ctx.channel.trigger_typing()
+    async def PlayerProfile(self, ctx, player: str, edit=False, messageObject=None):
+        if edit is False:
+            await ctx.channel.trigger_typing()
         hypixel.setCacheTime(cacheTime)
         try:
             startTime = time()
@@ -71,7 +132,8 @@ class PlayerCard:
                 if player is False:
                     raise hypixel.PlayerNotFoundException
 
-            self.playerObject = hypixel.Player(player)
+            if edit is False:
+                self.playerObject = hypixel.Player(player)
             self.playerInfo = self.playerObject.getPlayerInfo()
             self.ctx = ctx
 
@@ -150,7 +212,13 @@ class PlayerCard:
             embedObject.set_image(url=f"https://visage.surgeplay.com/full/256/{self.playerInfo['displayName']}")
             embedObject.set_thumbnail(url="http://i.imgur.com/te3hSIG.png")
             embedObject.set_footer(text=f'{self.footerText} | {ctx.author}', icon_url=self.bot.user.avatar_url)
-            messageObject = await ctx.send(content=None, embed=embedObject, delete_after=self.deleteTime)
+            if edit is True:
+                print("Trying to edit")
+                await messageObject.edit(content=None, embed=embedObject, delete_after=self.deleteTime)
+            else:
+                print("Trying to send")
+                messageObject = await ctx.send(content=None, embed=embedObject, delete_after=self.deleteTime)
+                print(messageObject)
             playerInfo = self.playerInfo
             await database.populatePlayer(ctx, playerInfo)
             print(f" > Replied in {round(time()-startTime, 2)}s.")
