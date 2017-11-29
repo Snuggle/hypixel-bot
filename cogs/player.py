@@ -46,7 +46,7 @@ class PlayerCard:
                     except KeyError:
                         pass
 
-                if success = False:
+                if success == False:
                     pass
                     # Add warning saying the user has no stats in this game.
 
