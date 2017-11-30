@@ -5,10 +5,10 @@ import json
 from time import strftime, gmtime, time
 from math import floor
 import asyncio
-from lib import database
+from hypixelbot import database
 cacheTime = 172800
 
-gameStats = json.load(open('./lib/gameStats.json'))
+gameStats = json.load(open('./hypixelbot/gameStats.json'))
 
 async def soft_delete(ctx):
     try:

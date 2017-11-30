@@ -1,0 +1,28 @@
+{
+  "SkyWars": {
+    "statsToDisplay": [
+      "kills_team",
+      "kills_solo",
+      "deaths_team",
+      "deaths_solo"
+    ],
+    "APIname": "SkyWars",
+    "description": "Skywars is a... [placeholder]",
+    "icon_id": 385333181026533387,
+    "icon_uri": "<:SkyWars:385333181026533387>"
+  },
+
+  "Bed Wars": {
+    "statsToDisplay": [
+      "win_streak",
+      "kills_team",
+      "kills_solo",
+      "deaths_team",
+      "deaths_solo"
+    ],
+    "APIname": "Bedwars",
+    "description": "Bed Wars is a... [placeholder]",
+    "icon_id": 385334508112707584,
+    "icon_uri": "<:BedWars:385334508112707584>"
+  }
+}
