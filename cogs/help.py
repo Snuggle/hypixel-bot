@@ -1,11 +1,6 @@
 from discord.ext import commands
 import discord
-
-async def soft_delete(ctx):
-    try:
-        await ctx.message.delete()
-    except:
-        pass
+from hypixelbot import utility
 
 class HelpCog:
     deleteTime = 60.0

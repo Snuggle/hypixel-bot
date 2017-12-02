@@ -5,16 +5,11 @@ from re import sub, findall
 import grequests
 from bs4 import BeautifulSoup
 from time import strftime, gmtime, time
+from hypixelbot import utility
 import traceback
 cacheTime = 864000
 
 guildCache = {}
-
-async def soft_delete(ctx):
-    try:
-        await ctx.message.delete()
-    except:
-        pass
 
 class GuildCog:
     footerText = 'Hypixel Bot | Made with \u2764 by Snuggle' # \u2764 is a heart symbol.

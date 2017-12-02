@@ -4,25 +4,46 @@
       "kills_team",
       "kills_solo",
       "deaths_team",
-      "deaths_solo"
+      "deaths_solo",
+      "coins"
     ],
     "APIname": "SkyWars",
     "description": "Skywars is a... [placeholder]",
-    "icon_id": 385333181026533387,
-    "icon_uri": "<:SkyWars:385333181026533387>"
+    "icon_id": 386231839670403082,
+    "icon_uri": "<:SkyWars:386231839670403082>"
   },
 
   "Bed Wars": {
     "statsToDisplay": [
-      "win_streak",
-      "kills_team",
-      "kills_solo",
-      "deaths_team",
-      "deaths_solo"
+      "kills_bedwars",
+      "deaths_bedwars",
+      "wins_bedwars",
+      "losses_bedwars",
+      "void_deaths_bedwars",
+      "winstreak",
+      "coins"
     ],
     "APIname": "Bedwars",
-    "description": "Bed Wars is a... [placeholder]",
-    "icon_id": 385334508112707584,
-    "icon_uri": "<:BedWars:385334508112707584>"
+    "description": "Bed Wars is a game about destroying beds!",
+    "icon_id": 386231839213223941,
+    "icon_uri": "<:BedWars:386231839213223941>"
+  },
+
+  "TNT Games": {
+    "statsToDisplay": [
+      "wins_tntrun",
+      "record_tntrun",
+      "wins_pvprun",
+      "record_pvprun",
+      "wins_tnttag",
+      "wins_bowspleef",
+      "deaths_bowspleef",
+      "kills_tntwizards",
+      "coins"
+    ],
+    "APIname": "TNTGames",
+    "description": "TNT Games is a gamemode about explosions!",
+    "icon_id": 386231839825723393,
+    "icon_uri": "<:TNTGames:386231839825723393>"
   }
 }

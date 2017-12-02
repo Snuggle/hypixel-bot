@@ -5,16 +5,10 @@ import json
 from time import strftime, gmtime, time
 from math import floor
 import asyncio
-from hypixelbot import database
+from hypixelbot import database, utility
 cacheTime = 172800
 
 gameStats = json.load(open('./hypixelbot/gameStats.json'))
-
-async def soft_delete(ctx):
-    try:
-        await ctx.message.delete()
-    except:
-        pass
 
 class PlayerCard:
     playerObject = None
@@ -31,24 +25,24 @@ class PlayerCard:
 
     async def generateGameCard(self, messageObject, ctx, reaction):
         for game in gameStats:
+            if type(reaction.emoji) is 'str':
+                emojiID = reaction.emoji
+            else:
+                emojiID = reaction.emoji.id
             if gameStats[game]['icon_id'] == reaction.emoji.id: # If true, correct game found.
-                embedObject = discord.Embed(color=0xFFAA00, title=f"{self.playerInfo['playerTitle']} {self.playerInfo['displayName']} > {game}", \
-                description=f"{gameStats[game]['description']}", url=f"https://hypixel.net/player/{self.playerInfo['displayName']}")
+                embedObject = discord.Embed(color=self.playerInfo['playerColour'], title=f"{self.playerInfo['playerTitle']} {self.playerInfo['displayName']} > {game}", \
+                description=f"{gameStats[game]['description']}\n\u200B", url=f"https://hypixel.net/player/{self.playerInfo['displayName']}")
 
                 apiname = gameStats[game]['APIname']
 
-                success = False
-
                 for statistic in gameStats[game]['statsToDisplay']:
                     try:
-                        embedObject.add_field(name=f"{statistic.replace('_', ' ').title()}", value=f"{self.playerObject.JSON['stats'][apiname][statistic]}")
-                        success = True
+                        inlineVar = True
+                        if statistic == "coins":
+                            inlineVar = False
+                        embedObject.add_field(name=f"{statistic.replace('_', ' ').title().replace(apiname, '')}", value=f"{int(self.playerObject.JSON['stats'][apiname][statistic]):,}", inline=inlineVar)
                     except KeyError:
-                        pass
-
-                if success == False:
-                    pass
-                    # Add warning saying the user has no stats in this game.
+                        embedObject.add_field(name=f"{statistic.replace('_', ' ').title()}", value=f"0")
 
                 embedObject.set_thumbnail(url=reaction.emoji.url)
                 embedObject.set_footer(text=f"{self.footerText}", icon_url=self.bot.user.avatar_url)
@@ -70,7 +64,7 @@ class PlayerCard:
                         await self.gameStats(messageObject, ctx)
 
     async def gameStats(self, messageObject, ctx):
-        embedObject = embedObject = discord.Embed(color=0xFFAA00, title=f"{self.playerInfo['playerTitle']} {self.playerInfo['displayName']} > Games", \
+        embedObject = embedObject = discord.Embed(color=self.playerInfo['playerColour'], title=f"{self.playerInfo['playerTitle']} {self.playerInfo['displayName']} > Games", \
         description="Please select a game from the list below!", url=f"https://hypixel.net/player/{self.playerInfo['displayName']}")
         for game in gameStats:
             print(game)
@@ -119,7 +113,7 @@ class PlayerCard:
             await self.gameStats(messageObject, ctx)
 
 
-    @commands.command(name='player', aliases=['Player', 'PLAYER'])
+    @commands.command(name='player', aliases=['Player', 'PLAYER', 'stats'])
     async def PlayerProfile(self, ctx, player: str, edit=False, messageObject=None):
         if edit is False:
             await ctx.channel.trigger_typing()

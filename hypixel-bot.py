@@ -36,14 +36,17 @@ async def on_command(ctx):
 
 @bot.event
 async def on_command_error(ctx, error):
-    ignored = (commands.CommandNotFound, commands.UserInputError, discord.errors.NotFound)
+    notFound = (commands.CommandNotFound)
+    ignored = (commands.UserInputError, discord.errors.NotFound)
     error = getattr(error, 'original', error)
-    if isinstance(error, ignored):
+    if isinstance(error, notFound):
         closestCommand = difflib.get_close_matches(ctx.message.content, valid_commands, n=len(valid_commands), cutoff=0.0)
         print(f"{ctx.author} > {ctx.message.content} > Command not found. Closest match: {closestCommand[0]}")
         embedObject = discord.Embed(color=0x800000, description=f"Unknown command! Did you mean `{closestCommand[0]}`?", url="https://sprinkly.net/hypixelbot")
         embedObject.set_footer(text=footerText, icon_url=bot.user.avatar_url)
         await ctx.send(content=None, embed=embedObject, delete_after=15.0)
+        return
+    elif isinstance(error, ignored):
         return
 
     print(f"{ctx.author} > {ctx.message.content} > Error handled.")
