@@ -25,6 +25,30 @@ class PlayerCard:
     def __init__(self, bot):
         self.bot = bot
 
+    async def generateInfoCard(self, messageObject, ctx):
+        embedObject = discord.Embed(color=self.playerInfo['playerColour'], title=f"{self.playerInfo['playerTitle']} {self.playerInfo['displayName']} > Information", \
+        description=f"\u200B", url=f"https://hypixel.net/player/{self.playerInfo['displayName']}")
+        embedObject.add_field(name=f"Minecraft UUID", value=f"`{self.playerObject.UUID}`", inline=True)
+        embedObject.add_field(name=f"Minecraft UUID", value=f"`{self.playerObject.UUID}`", inline=True)
+        embedObject.add_field(name=f"Minecraft UUID", value=f"`{self.playerObject.UUID}`", inline=True)
+
+        embedObject.set_thumbnail(url=f"https://visage.surgeplay.com/bust/{self.playerObject.UUID}")
+        embedObject.set_footer(text=f"{self.footerText}", icon_url=self.bot.user.avatar_url)
+        await messageObject.edit(embed=embedObject)
+        await messageObject.add_reaction("\U00002B05")
+
+        def reaction_info_check(reaction, user):
+            return user == ctx.author and reaction.message.id == messageObject.id
+
+        try:
+            reaction, user = await self.bot.wait_for('reaction_add', timeout=30.0, check=reaction_info_check)
+        except asyncio.TimeoutError:
+            await messageObject.clear_reactions()
+        else:
+            await messageObject.clear_reactions()
+            if reaction.emoji == '\U00002B05':
+                await self.PlayerProfile.callback(self=self, ctx=ctx, player=self.playerObject.UUID, edit=True, messageObject=messageObject)
+
     async def generateSocialCard(self, messageObject, ctx):
         embedObject = discord.Embed(color=self.playerInfo['playerColour'], title=f"{self.playerInfo['playerTitle']} {self.playerInfo['displayName']} > Social Media", \
         description=f"\u200B\nThis player has linked the following social media accounts:", url=f"https://hypixel.net/player/{self.playerInfo['displayName']}")
@@ -35,7 +59,7 @@ class PlayerCard:
             else:
                 embedObject.add_field(name=f"{social.title()}", value=f"`{socialMedia[social]}`", inline=True)
 
-        embedObject.set_thumbnail(url="http://i.imgur.com/te3hSIG.png")
+        embedObject.set_thumbnail(url=f"https://visage.surgeplay.com/bust/{self.playerObject.UUID}")
         embedObject.set_footer(text=f"{self.footerText}", icon_url=self.bot.user.avatar_url)
         await messageObject.edit(embed=embedObject)
         await messageObject.add_reaction("\U00002B05")
@@ -80,7 +104,8 @@ class PlayerCard:
                     except KeyError:
                         embedObject.add_field(name=f"{statistic[0]}", value=f"`·0`")
 
-                embedObject.set_thumbnail(url=reaction.emoji.url)
+                embedObject.set_thumbnail(url=f"https://visage.surgeplay.com/bust/{self.playerObject.UUID}")
+                embedObject.set_image(url=reaction.emoji.url)
                 embedObject.set_footer(text=f"{self.footerText}", icon_url=self.bot.user.avatar_url)
                 await messageObject.edit(embed=embedObject)
                 await messageObject.add_reaction("\U00002B05")
@@ -105,7 +130,7 @@ class PlayerCard:
             print(game)
             print(gameStats[game]['icon_uri'])
             embedObject.add_field(name=f"{gameStats[game]['icon_uri']}", value=game)
-        embedObject.set_thumbnail(url="http://i.imgur.com/te3hSIG.png")
+        embedObject.set_thumbnail(url=f"https://visage.surgeplay.com/bust/{self.playerObject.UUID}")
         embedObject.set_footer(text=f"{self.footerText}", icon_url=self.bot.user.avatar_url)
 
         await messageObject.edit(embed=embedObject)
@@ -143,7 +168,9 @@ class PlayerCard:
             await messageObject.clear_reactions()
         else:
             await messageObject.clear_reactions()
-            if str(reaction.emoji) == '\U0001F3AE':
+            if str(reaction.emoji) == '\U00002139':
+                await self.generateInfoCard(messageObject, ctx)
+            elif str(reaction.emoji) == '\U0001F3AE':
                 await self.gameStats(messageObject, ctx)
             elif str(reaction.emoji) == '\U0001F4AC':
                 await self.generateSocialCard(messageObject, ctx)
