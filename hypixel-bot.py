@@ -9,6 +9,7 @@ import sys
 import time
 import hypixel # Import all the things necessary
 import difflib
+from hypixelbot import utility
 
 keys = open("keys.ini", "r").readlines() # Get keys and set them all from file.
 hypixelKeys = [keys[0].replace('\n', '')]
@@ -29,6 +30,7 @@ bot = commands.AutoShardedBot(command_prefix=prefix, description=__description__
 
 @bot.event
 async def on_command(ctx):
+    await utility.soft_delete(ctx)
     try:
         print(f"#{ctx.author.guild.shard_id} | {ctx.author} > {ctx.message.content}", end='')
     except AttributeError:

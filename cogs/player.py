@@ -24,7 +24,6 @@ class PlayerCard:
         self.bot = bot
 
     async def generateSocialCard(self, messageObject, ctx):
-        print("AFJHOIUJDHF")
         embedObject = discord.Embed(color=self.playerInfo['playerColour'], title=f"{self.playerInfo['playerTitle']} {self.playerInfo['displayName']} > Social Media", \
         description=f"\u200B\nThis player has linked the following social media accounts:", url=f"https://hypixel.net/player/{self.playerInfo['displayName']}")
         socialMedia = self.playerObject.JSON['socialMedia']['links']
@@ -48,9 +47,8 @@ class PlayerCard:
             await messageObject.clear_reactions()
         else:
             await messageObject.clear_reactions()
-            await self.gameStats(messageObject, ctx)
             if reaction.emoji == '\U00002B05':
-                await self.gameStats(messageObject, ctx)
+                await self.PlayerProfile.callback(self=self, ctx=ctx, player=self.playerObject.UUID, edit=True, messageObject=messageObject)
 
     async def generateGameCard(self, messageObject, ctx, reaction):
         for game in gameStats:
@@ -254,7 +252,7 @@ class PlayerCard:
             playerInfo = self.playerInfo
             await database.populatePlayer(ctx, playerInfo)
             print(f" > Replied in {round(time()-startTime, 2)}s.")
-            await utility.soft_delete(ctx)
+
 
             print(messageObject)
             await self.do_buttons(messageObject, ctx)
@@ -263,7 +261,7 @@ class PlayerCard:
             embedObject = discord.Embed(color=0x800000, description='Player not found.', url="https://sprinkly.net/hypixelbot")
             embedObject.set_footer(text=self.footerText, icon_url=self.bot.user.avatar_url)
             await ctx.send(content=None, embed=embedObject, delete_after=self.deleteTime)
-            await utility.soft_delete(ctx)
+
 
 
 

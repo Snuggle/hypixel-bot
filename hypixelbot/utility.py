@@ -1,6 +1,7 @@
 async def soft_delete(ctx):
     try:
-        await ctx.message.delete()
+        if 'command' not in ctx.channel.name:
+            await ctx.message.delete()
     except:
         pass
 
