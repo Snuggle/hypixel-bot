@@ -43,9 +43,9 @@ class PlayerCard:
         try:
             reaction, user = await self.bot.wait_for('reaction_add', timeout=30.0, check=reaction_info_check)
         except asyncio.TimeoutError:
-            await messageObject.clear_reactions()
+            await utility.soft_clear(messageObject)
         else:
-            await messageObject.clear_reactions()
+            await utility.soft_clear(messageObject)
             if reaction.emoji == '\U00002B05':
                 await self.PlayerProfile.callback(self=self, ctx=ctx, player=self.playerObject.UUID, edit=True, messageObject=messageObject)
 
@@ -70,9 +70,9 @@ class PlayerCard:
         try:
             reaction, user = await self.bot.wait_for('reaction_add', timeout=30.0, check=reaction_info_check)
         except asyncio.TimeoutError:
-            await messageObject.clear_reactions()
+            await utility.soft_clear(messageObject)
         else:
-            await messageObject.clear_reactions()
+            await utility.soft_clear(messageObject)
             if reaction.emoji == '\U00002B05':
                 await self.PlayerProfile.callback(self=self, ctx=ctx, player=self.playerObject.UUID, edit=True, messageObject=messageObject)
 
@@ -98,7 +98,7 @@ class PlayerCard:
                         except ValueError:
                             pass
                         inlineVar = True
-                        if "Coins" in statistic[0]:
+                        if "Coins" in statistic[0] or "Level" in statistic[0]:
                             inlineVar = False
                         embedObject.add_field(name=f"{statistic[0]}", value=f"`{statisticValue}`", inline=inlineVar)
                     except KeyError:
@@ -116,9 +116,9 @@ class PlayerCard:
                 try:
                     reaction, user = await self.bot.wait_for('reaction_add', timeout=30.0, check=reaction_info_check)
                 except asyncio.TimeoutError:
-                    await messageObject.clear_reactions()
+                    await utility.soft_clear(messageObject)
                 else:
-                    await messageObject.clear_reactions()
+                    await utility.soft_clear(messageObject)
                     await self.gameStats(messageObject, ctx)
                     if reaction.emoji == '\U00002B05':
                         await self.gameStats(messageObject, ctx)
@@ -146,9 +146,9 @@ class PlayerCard:
         try:
             reaction, user = await self.bot.wait_for('reaction_add', timeout=30.0, check=reaction_info_check)
         except asyncio.TimeoutError:
-            await messageObject.clear_reactions()
+            await utility.soft_clear(messageObject)
         else:
-            await messageObject.clear_reactions()
+            await utility.soft_clear(messageObject)
             if reaction.emoji == '\U00002B05':
                 await self.PlayerProfile.callback(self=self, ctx=ctx, player=self.playerObject.UUID, edit=True, messageObject=messageObject)
             else:
@@ -156,24 +156,28 @@ class PlayerCard:
 
 
     async def do_buttons(self, messageObject, ctx):
-        await messageObject.add_reaction("\U00002139")
-        await messageObject.add_reaction("\U0001F3AE")
-        await messageObject.add_reaction("\U0001F4AC")
-        def reaction_info_check(reaction, user):
-            return user == ctx.author and reaction.message.id == messageObject.id
-
         try:
-            reaction, user = await self.bot.wait_for('reaction_add', timeout=30.0, check=reaction_info_check)
-        except asyncio.TimeoutError:
-            await messageObject.clear_reactions()
-        else:
-            await messageObject.clear_reactions()
-            if str(reaction.emoji) == '\U00002139':
-                await self.generateInfoCard(messageObject, ctx)
-            elif str(reaction.emoji) == '\U0001F3AE':
-                await self.gameStats(messageObject, ctx)
-            elif str(reaction.emoji) == '\U0001F4AC':
-                await self.generateSocialCard(messageObject, ctx)
+            unusedVariable = messageObject.channel.guild # If errors, this is is a direct message.
+            await messageObject.add_reaction("\U00002139")
+            await messageObject.add_reaction("\U0001F3AE")
+            await messageObject.add_reaction("\U0001F4AC")
+            def reaction_info_check(reaction, user):
+                return user == ctx.author and reaction.message.id == messageObject.id
+
+            try:
+                reaction, user = await self.bot.wait_for('reaction_add', timeout=30.0, check=reaction_info_check)
+            except asyncio.TimeoutError:
+                await utility.soft_clear(messageObject)
+            else:
+                await utility.soft_clear(messageObject)
+                if str(reaction.emoji) == '\U00002139':
+                    await self.generateInfoCard(messageObject, ctx)
+                elif str(reaction.emoji) == '\U0001F3AE':
+                    await self.gameStats(messageObject, ctx)
+                elif str(reaction.emoji) == '\U0001F4AC':
+                    await self.generateSocialCard(messageObject, ctx)
+        except AttributeError:
+            await ctx.send("Due to Discord's limitations on bots, I cannot use buttons/reactions in `Direct Messages`. Sorry! :heart:")
 
 
     @commands.command(name='player', aliases=['Player', 'PLAYER', 'stats'])

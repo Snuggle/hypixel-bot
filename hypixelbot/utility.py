@@ -5,6 +5,12 @@ async def soft_delete(ctx):
     except:
         pass
 
+async def soft_clear(messageObject):
+    try:
+        await messageObject.clear_reactions()
+    except:
+        pass
+
 def getBedwarsLevel(bedwarsExp):
     # Utility function stolen from https://github.com/Plancke/hypixel-php/blob/master/src/util/GameUtils.php
 
