@@ -23,6 +23,35 @@ class PlayerCard:
     def __init__(self, bot):
         self.bot = bot
 
+    async def generateSocialCard(self, messageObject, ctx):
+        print("AFJHOIUJDHF")
+        embedObject = discord.Embed(color=self.playerInfo['playerColour'], title=f"{self.playerInfo['playerTitle']} {self.playerInfo['displayName']} > Social Media", \
+        description=f"\u200B\nThis player has linked the following social media accounts:", url=f"https://hypixel.net/player/{self.playerInfo['displayName']}")
+        socialMedia = self.playerObject.JSON['socialMedia']['links']
+        for social in self.socialLinks:
+            if 'http' in socialMedia[social] or 'https' in socialMedia[social]:
+                embedObject.add_field(name=f"{social.title()}", value=f"[Click me!]({socialMedia[social]})", inline=True)
+            else:
+                embedObject.add_field(name=f"{social.title()}", value=f"`{socialMedia[social]}`", inline=True)
+
+        embedObject.set_thumbnail(url="http://i.imgur.com/te3hSIG.png")
+        embedObject.set_footer(text=f"{self.footerText}", icon_url=self.bot.user.avatar_url)
+        await messageObject.edit(embed=embedObject)
+        await messageObject.add_reaction("\U00002B05")
+
+        def reaction_info_check(reaction, user):
+            return user == ctx.author and reaction.message.id == messageObject.id
+
+        try:
+            reaction, user = await self.bot.wait_for('reaction_add', timeout=30.0, check=reaction_info_check)
+        except asyncio.TimeoutError:
+            await messageObject.clear_reactions()
+        else:
+            await messageObject.clear_reactions()
+            await self.gameStats(messageObject, ctx)
+            if reaction.emoji == '\U00002B05':
+                await self.gameStats(messageObject, ctx)
+
     async def generateGameCard(self, messageObject, ctx, reaction):
         for game in gameStats:
             if type(reaction.emoji) is 'str':
@@ -31,18 +60,25 @@ class PlayerCard:
                 emojiID = reaction.emoji.id
             if gameStats[game]['icon_id'] == reaction.emoji.id: # If true, correct game found.
                 embedObject = discord.Embed(color=self.playerInfo['playerColour'], title=f"{self.playerInfo['playerTitle']} {self.playerInfo['displayName']} > {game}", \
-                description=f"{gameStats[game]['description']}\n\u200B", url=f"https://hypixel.net/player/{self.playerInfo['displayName']}")
+                description=f"\u200B\n{gameStats[game]['description']}\n\u200B", url=f"https://hypixel.net/player/{self.playerInfo['displayName']}")
 
                 apiname = gameStats[game]['APIname']
+                stats = self.playerObject.JSON['stats'][apiname]
 
                 for statistic in gameStats[game]['statsToDisplay']:
                     try:
+                        statisticValue = eval(statistic[1])
+                        try:
+                            statisticValue = int(statisticValue)
+                            statisticValue = '{:,}'.format(statisticValue)
+                        except ValueError:
+                            pass
                         inlineVar = True
-                        if statistic == "coins":
+                        if "Coins" in statistic[0]:
                             inlineVar = False
-                        embedObject.add_field(name=f"{statistic.replace('_', ' ').title().replace(apiname, '')}", value=f"{int(self.playerObject.JSON['stats'][apiname][statistic]):,}", inline=inlineVar)
+                        embedObject.add_field(name=f"{statistic[0]}", value=f"`{statisticValue}`", inline=inlineVar)
                     except KeyError:
-                        embedObject.add_field(name=f"{statistic.replace('_', ' ').title()}", value=f"0")
+                        embedObject.add_field(name=f"{statistic[0]}", value=f"`·0`")
 
                 embedObject.set_thumbnail(url=reaction.emoji.url)
                 embedObject.set_footer(text=f"{self.footerText}", icon_url=self.bot.user.avatar_url)
@@ -50,7 +86,7 @@ class PlayerCard:
                 await messageObject.add_reaction("\U00002B05")
 
                 def reaction_info_check(reaction, user):
-                    return user == ctx.author
+                    return user == ctx.author and reaction.message.id == messageObject.id
 
                 try:
                     reaction, user = await self.bot.wait_for('reaction_add', timeout=30.0, check=reaction_info_check)
@@ -59,7 +95,6 @@ class PlayerCard:
                 else:
                     await messageObject.clear_reactions()
                     await self.gameStats(messageObject, ctx)
-                    print(reaction.emoji)
                     if reaction.emoji == '\U00002B05':
                         await self.gameStats(messageObject, ctx)
 
@@ -81,7 +116,7 @@ class PlayerCard:
             await messageObject.add_reaction(gameStats[game]['icon_uri'].replace('<', '').replace('>', ''))
 
         def reaction_info_check(reaction, user):
-            return user == ctx.author
+            return user == ctx.author and reaction.message.id == messageObject.id
 
         try:
             reaction, user = await self.bot.wait_for('reaction_add', timeout=30.0, check=reaction_info_check)
@@ -89,8 +124,6 @@ class PlayerCard:
             await messageObject.clear_reactions()
         else:
             await messageObject.clear_reactions()
-            print('flah')
-            print(reaction.emoji)
             if reaction.emoji == '\U00002B05':
                 await self.PlayerProfile.callback(self=self, ctx=ctx, player=self.playerObject.UUID, edit=True, messageObject=messageObject)
             else:
@@ -101,8 +134,9 @@ class PlayerCard:
         await messageObject.add_reaction("\U00002139")
         await messageObject.add_reaction("\U0001F3AE")
         await messageObject.add_reaction("\U0001F4AC")
+        await messageObject.add_reaction("\U0000274C")
         def reaction_info_check(reaction, user):
-            return user == ctx.author and str(reaction.emoji) == '\U0001F3AE'
+            return user == ctx.author and reaction.message.id == messageObject.id
 
         try:
             reaction, user = await self.bot.wait_for('reaction_add', timeout=30.0, check=reaction_info_check)
@@ -110,7 +144,10 @@ class PlayerCard:
             await messageObject.clear_reactions()
         else:
             await messageObject.clear_reactions()
-            await self.gameStats(messageObject, ctx)
+            if str(reaction.emoji) == '\U0001F3AE':
+                await self.gameStats(messageObject, ctx)
+            elif str(reaction.emoji) == '\U0001F4AC':
+                await self.generateSocialCard(messageObject, ctx)
 
 
     @commands.command(name='player', aliases=['Player', 'PLAYER', 'stats'])
@@ -217,15 +254,16 @@ class PlayerCard:
             playerInfo = self.playerInfo
             await database.populatePlayer(ctx, playerInfo)
             print(f" > Replied in {round(time()-startTime, 2)}s.")
-            await soft_delete(ctx)
+            await utility.soft_delete(ctx)
 
+            print(messageObject)
             await self.do_buttons(messageObject, ctx)
         except hypixel.PlayerNotFoundException:
             print(f" > Player not found.")
             embedObject = discord.Embed(color=0x800000, description='Player not found.', url="https://sprinkly.net/hypixelbot")
             embedObject.set_footer(text=self.footerText, icon_url=self.bot.user.avatar_url)
             await ctx.send(content=None, embed=embedObject, delete_after=self.deleteTime)
-            await soft_delete(ctx)
+            await utility.soft_delete(ctx)
 
 
 

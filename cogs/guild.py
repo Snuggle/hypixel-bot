@@ -63,7 +63,7 @@ class GuildCog:
                 embedObject = discord.Embed(color=0x800000, description=f"{playerInfo['displayName']} is not in a guild!", url="https://sprinkly.net/hypixelbot")
                 embedObject.set_footer(text=self.footerText, icon_url=self.bot.user.avatar_url)
                 await ctx.send(content=None, embed=embedObject, delete_after=self.deleteTime)
-                await soft_delete(ctx)
+                await utility.soft_delete(ctx)
                 return False
 
             guildObject = hypixel.Guild(guildID)
@@ -103,13 +103,13 @@ class GuildCog:
             embedObject.set_footer(text=f'{self.footerText} | {ctx.author}', icon_url=self.bot.user.avatar_url)
             messageObject = await ctx.send(content=None, embed=embedObject, delete_after=self.deleteTime)
             print(f" > Replied in {round(time()-startTime, 2)}s.")
-            await soft_delete(ctx)
+            await utility.soft_delete(ctx)
         except hypixel.PlayerNotFoundException:
             print(f" > Player not found.")
             embedObject = discord.Embed(color=0x800000, description='Player not found.', url="https://sprinkly.net/hypixelbot")
             embedObject.set_footer(text=self.footerText, icon_url=self.bot.user.avatar_url)
             await ctx.send(content=None, embed=embedObject, delete_after=self.deleteTime)
-            await soft_delete(ctx)
+            await utility.soft_delete(ctx)
 
 def setup(bot):
     bot.add_cog(GuildCog(bot))

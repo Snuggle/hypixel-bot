@@ -5,7 +5,7 @@ class OwnerCog:
 
     def __init__(self, bot):
         self.bot = bot
-    
+
     @commands.command(name='load')
     @commands.is_owner()
     async def cog_load(self, ctx, *, cog: str):
@@ -64,6 +64,12 @@ class OwnerCog:
 
         await self.bot.change_presence(game=game, status=status, afk=False)
         print(f" > Changed presence to {message[1]}.")
+
+    @commands.command(name='identify')
+    @commands.is_owner()
+    async def identify(self, ctx):
+        embedObject = discord.Embed(color=0xCDA040, title="Identity Verification", description=f"This is Snuggle's actual Discord account. They are a moderator for the Hypixel Network as well as my creator.\nPlease view https://hypixel.net/player/Snuggle for more information.")
+        await ctx.send(content=None, embed=embedObject, delete_after=10.0)
 
     @commands.command(name='test')
     async def cog_test(self, ctx):

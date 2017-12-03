@@ -1,11 +1,11 @@
 {
   "SkyWars": {
     "statsToDisplay": [
-      "kills_team",
-      "kills_solo",
-      "deaths_team",
-      "deaths_solo",
-      "coins"
+      ["Team Kills", "stats['kills_team']"],
+      ["Solo Kills", "stats['kills_solo']"],
+      ["Team Deaths", "stats['deaths_team']"],
+      ["Solo Deaths", "stats['deaths_solo']"],
+      ["SkyWars Coins", "stats['coins']"]
     ],
     "APIname": "SkyWars",
     "description": "Skywars is a... [placeholder]",
@@ -15,31 +15,33 @@
 
   "Bed Wars": {
     "statsToDisplay": [
-      "kills_bedwars",
-      "deaths_bedwars",
-      "wins_bedwars",
-      "losses_bedwars",
-      "void_deaths_bedwars",
-      "winstreak",
-      "coins"
+      ["Bed Wars Level", "round(utility.getBedwarsLevel(stats['Experience']), 2)"],
+      ["Wins", "stats['wins_bedwars']"],
+      ["Losses", "stats['losses_bedwars']"],
+      ["Kills", "stats['kills_bedwars']"],
+      ["Deaths", "stats['deaths_bedwars']"],
+      ["Win/Loss Ratio", "round(stats['wins_bedwars']/stats['losses_bedwars'], 2)"],
+      ["Kill/Death Ratio", "round(stats['kills_bedwars']/stats['deaths_bedwars'], 2)"],
+      ["Win-streak", "stats['winstreak']"],
+      ["Bed Wars Coins", "stats['coins']"]
     ],
     "APIname": "Bedwars",
-    "description": "Bed Wars is a game about destroying beds!",
+    "description": "In Bed Wars, you and up to 3 teammates battle for control of the Dreamscape.\n\nGather resources, defend your base, support your teammates and eliminate all enemy beds and players to win!",
     "icon_id": 386231839213223941,
     "icon_uri": "<:BedWars:386231839213223941>"
   },
 
   "TNT Games": {
     "statsToDisplay": [
-      "wins_tntrun",
-      "record_tntrun",
-      "wins_pvprun",
-      "record_pvprun",
-      "wins_tnttag",
-      "wins_bowspleef",
-      "deaths_bowspleef",
-      "kills_tntwizards",
-      "coins"
+     ["TNT Run Wins", "stats['wins_tntrun']"],
+     ["TNT Run Record", "stats['record_tntrun']"],
+     ["PVP Run Wins", "stats['wins_pvprun']"],
+     ["PVP Run Record", "stats['record_pvprun']"],
+     ["TNT Tag Wins", "stats['wins_tnttag']"],
+     ["Bowspleef Wins", "stats['wins_bowspleef']"],
+     ["Bowspleef Deaths", "stats['deaths_bowspleef']"],
+     ["TNT Wizards Kills", "stats['kills_tntwizards']"],
+     ["TNT Games Coins", "stats['coins']"]
     ],
     "APIname": "TNTGames",
     "description": "TNT Games is a gamemode about explosions!",
