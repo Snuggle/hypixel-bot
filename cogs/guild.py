@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 from time import strftime, gmtime, time
 from hypixelbot import utility
 import traceback
-cacheTime = 864000
+cacheTime = 86400
 
 guildCache = {}
 

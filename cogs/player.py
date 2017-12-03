@@ -8,7 +8,7 @@ from math import floor
 import asyncio
 import ago
 from hypixelbot import database, utility
-cacheTime = 172800
+cacheTime = 3600
 
 gameStats = json.load(open('./hypixelbot/gameStats.json'))
 
