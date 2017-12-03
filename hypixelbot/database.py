@@ -1,4 +1,6 @@
 import sqlite3
+import discord
+from discord.ext import commands
 async def findMinecraftUUID(discordID):
     connection = sqlite3.connect("hypixel.db")
     cursor = connection.cursor()
@@ -15,6 +17,25 @@ async def findMinecraftUUID(discordID):
     cursor.close()
     connection.close()
 
+async def getDiscordID(UUID):
+    connection = sqlite3.connect("hypixel.db")
+    cursor = connection.cursor()
+    cursor.execute("""SELECT HypixelPlayers.UUID, HypixelPlayers.DiscordID FROM HypixelPlayers;""")
+    results = cursor.fetchall()
+
+    for player in results:
+        if player[0] == UUID:
+            print(" > found in database", end='')
+            if player[1] is None:
+                continue
+            discordID = f"<@{player[1]}>"
+            return discordID
+    print(" > not in database", end='')
+    return '`Unlinked`'
+
+    cursor.close()
+    connection.close()
+
 async def populatePlayer(ctx, playerInfo):
     discordName = playerInfo['socialMedia']['links']['DISCORD']
     if discordName == "N/A":
@@ -23,6 +44,7 @@ async def populatePlayer(ctx, playerInfo):
         discordID = discord.utils.get(ctx.channel.members, name=discordName.split('#')[0], discriminator=discordName.split('#')[1]).id
     except:
         discordID = None
+    print(discordID)
     values_to_insert = [playerInfo['uuid'], playerInfo['displayName'], discordID, discordName, 0]
     values_to_update = [playerInfo['displayName'], discordID, discordName, playerInfo['uuid']]
     values_to_update_noID = [playerInfo['displayName'], discordName, playerInfo['uuid']]
@@ -34,6 +56,7 @@ async def populatePlayer(ctx, playerInfo):
                             VALUES (?, ?, ?, ?, ?)""", (values_to_insert,))
         print(" > inserted to database", end='')
     except sqlite3.IntegrityError:
+        print(discordID)
         if discordID is None:
             cursor.executemany("""
                                 UPDATE HypixelPlayers

@@ -11,7 +11,8 @@ class LinkCog:
         self.bot = bot
 
     @commands.command(name='link', aliases=['linkdiscord', 'discordlink', 'LINK'])
-    async def cog_link(self, ctx):
+    async def linkDiscord(self, ctx):
+        embedObject = discord.Embed(color=0xCDA040, title=f"Link Your Discord Account!", description=f"Please join the Hypixel Network")
 
 
 def setup(bot):

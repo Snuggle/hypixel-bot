@@ -3,8 +3,10 @@ from discord.ext import commands
 import hypixel
 import json
 from time import strftime, gmtime, time
+import datetime
 from math import floor
 import asyncio
+import ago
 from hypixelbot import database, utility
 cacheTime = 172800
 
@@ -132,7 +134,6 @@ class PlayerCard:
         await messageObject.add_reaction("\U00002139")
         await messageObject.add_reaction("\U0001F3AE")
         await messageObject.add_reaction("\U0001F4AC")
-        await messageObject.add_reaction("\U0000274C")
         def reaction_info_check(reaction, user):
             return user == ctx.author and reaction.message.id == messageObject.id
 
@@ -199,15 +200,6 @@ class PlayerCard:
                 forumsLink = self.playerInfo['socialMedia']['links']['HYPIXEL']
             except KeyError:
                 forumsLink = "Unlinked"
-            try:
-                discordName = self.playerInfo['socialMedia']['links']['DISCORD']
-                discordID = discord.utils.get(ctx.channel.members, name=discordName.split('#')[0], discriminator=discordName.split('#')[1])
-                if discordID is not None:
-                    discordID = discordID.id
-                    discordName = f'<@{discordID}>'
-            except:
-                discordName = "`Unlinked`"
-
 
             if playerRank['wasStaff'] == False:
                 embedObject.add_field(name="Rank", value=f"`{playerRank['rank']}`")
@@ -223,6 +215,9 @@ class PlayerCard:
             lastLogin = self.playerInfo['lastLogin']
 
             try: # Optional formatting
+                timeAgo = ''
+                beforeTime = datetime.datetime.fromtimestamp(int(lastLogin/1000))
+                timeAgo = f"({ago.human(datetime.datetime.now() - beforeTime, precision=1)})"
                 firstLogin = strftime("%Y-%m-%d", gmtime(int(self.playerInfo['firstLogin']) / 1000.0))
                 lastLogin = strftime("%Y-%m-%d", gmtime(int(self.playerInfo['lastLogin']) / 1000.0))
                 self.playerInfo['karma'] = f"{int(self.playerInfo['karma']):,}"
@@ -233,8 +228,9 @@ class PlayerCard:
             embedObject.add_field(name="Minecraft Version", value=f"`{self.playerInfo['mcVersionRp']}`")     # E.g: 368.86864043126684 -> 368.68
             embedObject.add_field(name="Guild", value=f"`{GuildID}`")
             embedObject.add_field(name="Karma", value=f"`{self.playerInfo['karma']}`")
-            embedObject.add_field(name="First / Last Login", value=f"`{firstLogin} / {lastLogin}`")
-            embedObject.add_field(name="Discord", value=f"{discordName}")
+            embedObject.add_field(name="First / Last Login", value=f"`{firstLogin} / {lastLogin}\n{timeAgo}`")
+            DiscordID = await database.getDiscordID(self.playerObject.UUID)
+            embedObject.add_field(name="Discord", value=f"{DiscordID}")
             if forumsLink == "Unlinked":
                 embedObject.add_field(name="Forums", value=f"`Unlinked`")
             else:
