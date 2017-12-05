@@ -8,7 +8,7 @@
       ["SkyWars Coins", "stats['coins']"]
     ],
     "APIname": "SkyWars",
-    "description": "Skywars is a... [placeholder]",
+    "description": "In Skywars, you're on an island and fighting for your life! Stay alive and beware, the depths of the void below.",
     "icon_id": 386231839670403082,
     "icon_uri": "<:SkyWars:386231839670403082>"
   },
