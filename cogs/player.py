@@ -256,7 +256,11 @@ class PlayerCard:
                 firstLogin = strftime("%Y-%m-%d", gmtime(int(self.playerInfo['firstLogin']) / 1000.0))
                 lastLogin = strftime("%Y-%m-%d", gmtime(int(self.playerInfo['lastLogin']) / 1000.0))
                 karma = self.playerInfo['karma']
-                karma = humanize.intword(karma)
+                if karma >= 1000000:
+                    karma = humanize.intword(karma)
+                elif karma >= 1000:
+                    karma = f"{int(karma/1000)} thousand"
+                karma = str(karma)
             except:
                 pass
 
@@ -272,7 +276,7 @@ class PlayerCard:
             else:
                 embedObject.add_field(name="Forums", value=f"[View]({forumsLink}) forum account.")
             embedObject.set_image(url=f"https://visage.surgeplay.com/full/256/{self.playerInfo['displayName']}") # TODO: Random number for caching
-            embedObject.set_thumbnail(url="https://i.imgur.com/Z43PAEs.png")
+            embedObject.set_thumbnail(url="https://i.imgur.com/IsKZI1G.png")
             embedObject.set_footer(text=f'{self.footerText} | {ctx.author}', icon_url=self.bot.user.avatar_url)
             if edit is True:
                 print("Trying to edit")
