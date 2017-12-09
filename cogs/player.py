@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+import humanize
 import hypixel
 import json
 from time import strftime, gmtime, time
@@ -26,11 +27,17 @@ class PlayerCard:
         self.bot = bot
 
     async def generateInfoCard(self, messageObject, ctx):
-        embedObject = discord.Embed(color=self.playerInfo['playerColour'], title=f"{self.playerInfo['playerTitle']} {self.playerInfo['displayName']} > Information", \
+        embedObject = discord.Embed(color=self.playerInfo['playerColour'], title=f"{self.playerInfo['playerTitle']} {self.playerInfo['displayName']} > Miscellaneous Information", \
         description=f"\u200B", url=f"https://hypixel.net/player/{self.playerInfo['displayName']}")
+
+        i = 1; knownAliases = ""
+        for alias in self.playerObject.JSON['knownAliases']:
+            knownAliases = knownAliases + f"\n{i} | {alias}"
+            i += 1
+
         embedObject.add_field(name=f"Minecraft UUID", value=f"`{self.playerObject.UUID}`", inline=True)
-        embedObject.add_field(name=f"Minecraft UUID", value=f"`{self.playerObject.UUID}`", inline=True)
-        embedObject.add_field(name=f"Minecraft UUID", value=f"`{self.playerObject.UUID}`", inline=True)
+        embedObject.add_field(name=f"Network Experience", value=f"`{humanize.intword(self.playerInfo['networkExp'])}`", inline=True)
+        embedObject.add_field(name=f"Known Usernames", value=f"```python\n{knownAliases[:1024]}```", inline=True)
 
         embedObject.set_thumbnail(url=f"https://visage.surgeplay.com/bust/{self.playerObject.UUID}")
         embedObject.set_footer(text=f"{self.footerText}", icon_url=self.bot.user.avatar_url)
@@ -52,7 +59,7 @@ class PlayerCard:
     async def generateSocialCard(self, messageObject, ctx):
         embedObject = discord.Embed(color=self.playerInfo['playerColour'], title=f"{self.playerInfo['playerTitle']} {self.playerInfo['displayName']} > Social Media", \
         description=f"\u200B\nThis player has linked the following social media accounts:", url=f"https://hypixel.net/player/{self.playerInfo['displayName']}")
-        socialMedia = self.playerObject.JSON['socialMedia']['links']
+        socialMedia = self.playerInfo['socialMedia']['links']
         for social in self.socialLinks:
             if 'http' in socialMedia[social] or 'https' in socialMedia[social]:
                 embedObject.add_field(name=f"{social.title()}", value=f"[Click me!]({socialMedia[social]})", inline=True)
@@ -227,11 +234,6 @@ class PlayerCard:
             embedObject = discord.Embed(color=playerColour, title=f"{playerTitle} {self.playerInfo['displayName']}", \
             description="\u200B", url=f"https://hypixel.net/player/{self.playerInfo['displayName']}") # \u200B is a zero-width space, to add padding.
 
-            try:
-                forumsLink = self.playerInfo['socialMedia']['links']['HYPIXEL']
-            except KeyError:
-                forumsLink = "Unlinked"
-
             if playerRank['wasStaff'] == False:
                 embedObject.add_field(name="Rank", value=f"`{playerRank['rank']}`")
             else:
@@ -244,6 +246,8 @@ class PlayerCard:
 
             firstLogin = self.playerInfo['firstLogin']
             lastLogin = self.playerInfo['lastLogin']
+            forumsLink = self.playerInfo['socialMedia']['links']['HYPIXEL']
+            karma = 0
 
             try: # Optional formatting
                 timeAgo = ''
@@ -251,23 +255,24 @@ class PlayerCard:
                 timeAgo = f"({ago.human(datetime.datetime.now() - beforeTime, precision=1)})"
                 firstLogin = strftime("%Y-%m-%d", gmtime(int(self.playerInfo['firstLogin']) / 1000.0))
                 lastLogin = strftime("%Y-%m-%d", gmtime(int(self.playerInfo['lastLogin']) / 1000.0))
-                self.playerInfo['karma'] = f"{int(self.playerInfo['karma']):,}"
+                karma = self.playerInfo['karma']
+                karma = humanize.intword(karma)
             except:
                 pass
 
             embedObject.add_field(name="Level", value=f"`{floor(self.playerInfo['networkLevel']*100)/100}`") # Floor the network level to 2dp.
             embedObject.add_field(name="Minecraft Version", value=f"`{self.playerInfo['mcVersionRp']}`")     # E.g: 368.86864043126684 -> 368.68
             embedObject.add_field(name="Guild", value=f"`{GuildID}`")
-            embedObject.add_field(name="Karma", value=f"`{self.playerInfo['karma']}`")
+            embedObject.add_field(name="Karma", value=f"`{karma}`")
             embedObject.add_field(name="First / Last Login", value=f"`{firstLogin} / {lastLogin}\n{timeAgo}`")
             DiscordID = await database.getDiscordID(self.playerObject.UUID)
             embedObject.add_field(name="Discord", value=f"{DiscordID}")
-            if forumsLink == "Unlinked":
+            if forumsLink == "N/A":
                 embedObject.add_field(name="Forums", value=f"`Unlinked`")
             else:
                 embedObject.add_field(name="Forums", value=f"[View]({forumsLink}) forum account.")
-            embedObject.set_image(url=f"https://visage.surgeplay.com/full/256/{self.playerInfo['displayName']}")
-            embedObject.set_thumbnail(url="http://i.imgur.com/te3hSIG.png")
+            embedObject.set_image(url=f"https://visage.surgeplay.com/full/256/{self.playerInfo['displayName']}") # TODO: Random number for caching
+            embedObject.set_thumbnail(url="https://i.imgur.com/Z43PAEs.png")
             embedObject.set_footer(text=f'{self.footerText} | {ctx.author}', icon_url=self.bot.user.avatar_url)
             if edit is True:
                 print("Trying to edit")

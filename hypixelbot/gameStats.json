@@ -20,8 +20,8 @@
       ["Losses", "stats['losses_bedwars']"],
       ["Kills", "stats['kills_bedwars']"],
       ["Deaths", "stats['deaths_bedwars']"],
-      ["Win/Loss Ratio", "round(stats['wins_bedwars']/stats['losses_bedwars'], 2)"],
-      ["Kill/Death Ratio", "round(stats['kills_bedwars']/stats['deaths_bedwars'], 2)"],
+      ["Win/Loss Ratio", "str(round(stats['wins_bedwars']/stats['losses_bedwars'], 2))"],
+      ["Kill/Death Ratio", "str(round(stats['kills_bedwars']/stats['deaths_bedwars'], 2))"],
       ["Win-streak", "stats['winstreak']"],
       ["Bed Wars Coins", "stats['coins']"]
     ],

@@ -10,11 +10,13 @@ import time
 import hypixel # Import all the things necessary
 import difflib
 from hypixelbot import utility
+#from dbl import DBLClient
 
 keys = open("keys.ini", "r").readlines() # Get keys and set them all from file.
 hypixelKeys = [keys[0].replace('\n', '')]
 hypixel.setKeys(hypixelKeys) # Set Hypixel-API key.
-bot_token = keys[1]
+bot_token = keys[2]
+#dbltoken = keys[2]
 
 prefix = ['hypixel-', 'Hypixel-']
 footerText = 'Hypixel Bot | Made with \u2764 by Snuggle' # \u2764 is a heart symbol.
@@ -24,7 +26,10 @@ startup_extensions = ('cogs.player', # These are the extensions that will be loa
                       'cogs.help',
                       'cogs.guild')
 
-valid_commands = ['hypixel-player username', 'hypixel-guild username', 'hypixel-help']
+valid_commands = ['hypixel-player',
+                  'hypixel-guild',
+                  'hypixel-link',
+                  'hypixel-help']
 
 bot = commands.AutoShardedBot(command_prefix=prefix, description=__description__, shard_count=3, shard_ids=[0, 1, 2]) # Create Discord bot.
 
@@ -38,11 +43,13 @@ async def on_command(ctx):
 
 @bot.event
 async def on_command_error(ctx, error):
-    notFound = (commands.CommandNotFound)
+    notFound = (commands.CommandNotFound, commands.MissingRequiredArgument)
     ignored = (commands.UserInputError, discord.errors.NotFound)
     error = getattr(error, 'original', error)
     if isinstance(error, notFound):
         closestCommand = difflib.get_close_matches(ctx.message.content, valid_commands, n=len(valid_commands), cutoff=0.0)
+        if closestCommand[0] != "hypixel-help":
+            closestCommand[0] = closestCommand[0] + ' username'
         print(f"{ctx.author} > {ctx.message.content} > Command not found. Closest match: {closestCommand[0]}")
         embedObject = discord.Embed(color=0x800000, description=f"Unknown command! Did you mean `{closestCommand[0]}`?", url="https://sprinkly.net/hypixelbot")
         embedObject.set_footer(text=footerText, icon_url=bot.user.avatar_url)
@@ -99,6 +106,20 @@ async def on_ready(): # When the bot is ready, do the following...
 @bot.event
 async def on_shard_ready(shard_id):
     print(f"Shard is ready!")
+
+#client = DBLClient(token=dbltoken)
+#
+#@bot.event
+#async def on_guild_join(server):
+#    await client.post_stats(jsonObject={
+#        "server_count": len(bot.guilds)
+#        })
+#
+#@bot.event
+#async def on_guild_leave(server):
+#    await client.post_stats(jsonObject={
+#        "server_count": len(bot.guilds)
+#        })
 
 
 print("Beep, boop!")

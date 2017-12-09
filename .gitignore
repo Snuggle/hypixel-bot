@@ -6,7 +6,6 @@ development.py
 keys.ini
 testdata.txt
 hypixel.db
-assets
 
 # C extensions
 *.so
