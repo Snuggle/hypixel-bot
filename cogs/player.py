@@ -292,8 +292,9 @@ class PlayerCard:
                     if thumbnailURL is None:
                         thumbnailURL = rankMap[playerRank]
 
-            if self.playerInfo['displayName'] == "Snuggle":
-                thumbnailURL = rankMap["Snuggle"]
+            displayName = self.playerInfo['displayName'].replace('\\', '')
+            if displayName == "Snuggle" or displayName == "Pixiest":
+                thumbnailURL = rankMap[displayName]
 
             embedObject.set_thumbnail(url=thumbnailURL)
             embedObject.set_footer(text=f'{self.footerText} | {ctx.author}', icon_url=self.bot.user.avatar_url)
