@@ -12,13 +12,14 @@ from hypixelbot import database, utility
 cacheTime = 3600
 
 gameStats = json.load(open('./hypixelbot/gameStats.json'))
+rankMap = json.load(open('./hypixelbot/rankMap.json'))
 
 class PlayerCard:
     playerObject = None
     playerInfo = None
     ctx = None
     footerText = 'Hypixel Bot | Made with \u2764 by Snuggle' # \u2764 is a heart symbol.
-    rankColours = {'MVP': 0x55FFFF, 'VIP': 0x55FF55, 'MVP+': 0x55FFFF, 'VIP+': 0x55FF55, 'Non': 0xAAAAAA, 'Helper': 0x5555FF, 'Moderator': 0x00AA00, 'Admin': 0xFF5555, 'Youtuber': 0xFFAA00, 'Build Team': 0x00AAAA, 'Owner': 0xFF5555, 'None': 0xAAAAAA, 'Mixer': 0x00AAAA}
+    rankColours = {'MVP': 0x55FFFF, 'VIP': 0x55FF55, 'MVP+': 0x55FFFF, 'VIP+': 0x55FF55, 'Non': 0xAAAAAA, 'Helper': 0x5555FF, 'Moderator': 0x00AA00, 'Admin': 0xFF5555, 'MCProHosting': 0xFF5555, 'Youtuber': 0xFFAA00, 'Build Team': 0x00AAAA, 'Owner': 0xFF5555, 'None': 0xAAAAAA, 'Mixer': 0x00AAAA}
     dataItems = ['karma', 'firstLogin', 'lastLogin', 'mcVersionRp', 'networkExp', 'displayName', 'rank', 'networkLevel', 'socialMedia']
     socialLinks = ['YOUTUBE', 'TWITTER', 'HYPIXEL', 'DISCORD', 'MIXER']
     deleteTime = 60.0
@@ -223,6 +224,7 @@ class PlayerCard:
             try:
                 playerTitle = self.playerInfo['prefix'].title().split('[')[1]
                 playerTitle = playerTitle.replace(']', '')
+                playerTitle = playerTitle.replace('§Amc§Fprohosting§C', 'MCProHosting')
             except KeyError:
                 playerTitle = playerRank['rank']
 
@@ -276,7 +278,24 @@ class PlayerCard:
             else:
                 embedObject.add_field(name="Forums", value=f"[View]({forumsLink}) forum account.")
             embedObject.set_image(url=f"https://visage.surgeplay.com/full/256/{self.playerInfo['displayName']}") # TODO: Random number for caching
-            embedObject.set_thumbnail(url="https://i.imgur.com/IsKZI1G.png")
+
+            if playerTitle in rankMap:
+                if playerTitle == "MVP+":
+                    if 'rankPlusColor' in self.playerObject.JSON:
+                        rankPlusColor = self.playerObject.JSON['rankPlusColor']
+                    else:
+                        rankPlusColor = 'RED'
+                    print(rankPlusColor)
+                    thumbnailURL = rankMap["MVP+"][rankPlusColor]
+                else:
+                    thumbnailURL = rankMap[playerTitle]
+                    if thumbnailURL is None:
+                        thumbnailURL = rankMap[playerRank]
+
+            if self.playerInfo['displayName'] == "Snuggle":
+                thumbnailURL = rankMap["Snuggle"]
+
+            embedObject.set_thumbnail(url=thumbnailURL)
             embedObject.set_footer(text=f'{self.footerText} | {ctx.author}', icon_url=self.bot.user.avatar_url)
             if edit is True:
                 print("Trying to edit")
