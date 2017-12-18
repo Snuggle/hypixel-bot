@@ -1,21 +1,8 @@
 {
-  "SkyWars": {
-    "statsToDisplay": [
-      ["Team Kills", "stats['kills_team']"],
-      ["Solo Kills", "stats['kills_solo']"],
-      ["Team Deaths", "stats['deaths_team']"],
-      ["Solo Deaths", "stats['deaths_solo']"],
-      ["SkyWars Coins", "stats['coins']"]
-    ],
-    "APIname": "SkyWars",
-    "description": "In Skywars, you're on an island and fighting for your life! Stay alive and beware, the depths of the void below.",
-    "icon_id": 386231839670403082,
-    "icon_uri": "<:SkyWars:386231839670403082>"
-  },
 
   "Bed Wars": {
     "statsToDisplay": [
-      ["Bed Wars Level", "round(utility.getBedwarsLevel(stats['Experience']), 2)"],
+      ["Bed Wars Level", "str(round(utility.getBedwarsLevel(stats['Experience']), 2)) + ' \u272B'"],
       ["Wins", "stats['wins_bedwars']"],
       ["Losses", "stats['losses_bedwars']"],
       ["Kills", "stats['kills_bedwars']"],
@@ -23,12 +10,47 @@
       ["Win/Loss Ratio", "str(round(stats['wins_bedwars']/stats['losses_bedwars'], 2))"],
       ["Kill/Death Ratio", "str(round(stats['kills_bedwars']/stats['deaths_bedwars'], 2))"],
       ["Win-streak", "stats['winstreak']"],
-      ["Bed Wars Coins", "stats['coins']"]
+      ["Bed Wars Coins", "str(stats['coins']) + ' \\U0001F4B8'"]
     ],
     "APIname": "Bedwars",
     "description": "In Bed Wars, you and up to 3 teammates battle for control of the Dreamscape.\n\nGather resources, defend your base, support your teammates and eliminate all enemy beds and players to win!",
     "icon_id": 386231839213223941,
     "icon_uri": "<:BedWars:386231839213223941>"
+  },
+
+  "SkyWars": {
+    "statsToDisplay": [
+      ["Team Kills", "stats['kills_team']"],
+      ["Solo Kills", "stats['kills_solo']"],
+      ["Team Deaths", "stats['deaths_team']"],
+      ["Solo Deaths", "stats['deaths_solo']"],
+      ["SkyWars Coins", "str(stats['coins']) + ' \\U0001F4B8'"]
+    ],
+    "APIname": "SkyWars",
+    "description": "In Skywars, you're on an island and fighting for your life! Stay alive and beware, the depths of the void below.",
+    "icon_id": 386231839670403082,
+    "icon_uri": "<:SkyWars:386231839670403082>"
+  },
+
+  "Murder Mystery": {
+    "statsToDisplay": [
+      ["Classic Kills", "stats['kills_MURDER_CLASSIC']"],
+      ["Classic Deaths", "stats['deaths_MURDER_CLASSIC']"],
+      ["Assassins Kills", "stats['kills_MURDER_ASSASSINS']"],
+      ["Assassins Deaths", "stats['deaths_MURDER_ASSASSINS']"],
+      ["Infection Games Played", "stats['games_MURDER_INFECTION']"],
+      ["Infected | Survivor Kills", "str(str(stats['kills_as_survivor']) + \"|\" + str(stats['kills_as_infected']))"],
+      ["Infection Total Time Survived", "str(datetime.timedelta(seconds=stats['total_time_survived_seconds_MURDER_INFECTION']))"],
+      ["Classic Win/Loss Ratio", "stats['deaths_team']"],
+      ["Assassins Win/Loss Ratio", "stats['deaths_team']"],
+      ["Infection Win/Loss Ratio", "stats['deaths_team']"],
+      ["Total Games Played", "stats['games']"],
+      ["Murder Mystery Coins", "str(stats['coins']) + ' \\U0001F4B8'"]
+    ],
+    "APIname": "MurderMystery",
+    "description": "Players take on the role of either Murderer, Detective or Innocent. The Murderer must be sneaky and try to kill as many people as he can without being caught or killed. The detective and innocents must work together to protect each other and try to figure out who the murderer is.",
+    "icon_id": 386231839720865802,
+    "icon_uri": "<:MurderMystery:386231839720865802>"
   },
 
   "TNT Games": {
@@ -41,7 +63,7 @@
      ["Bowspleef Wins", "stats['wins_bowspleef']"],
      ["Bowspleef Deaths", "stats['deaths_bowspleef']"],
      ["TNT Wizards Kills", "stats['kills_tntwizards']"],
-     ["TNT Games Coins", "stats['coins']"]
+     ["TNT Games Coins", "str(stats['coins']) + ' \\U0001F4B8'"]
     ],
     "APIname": "TNTGames",
     "description": "TNT Games is a gamemode about explosions!",

@@ -113,6 +113,8 @@ class PlayerCard:
                         embedObject.add_field(name=f"{statistic[0]}", value=f"`{statisticValue}`", inline=inlineVar)
                     except KeyError:
                         embedObject.add_field(name=f"{statistic[0]}", value=f"`·0`")
+                    except Exception as error:
+                        embedObject.add_field(name=f"{statistic[0]}", value=f"`Error`")
 
                 embedObject.set_thumbnail(url=f"https://visage.surgeplay.com/bust/{self.playerObject.UUID}?v={self.randomQuery}")
                 embedObject.set_image(url="https://hypixel.net/styles/hypixel-uix/hypixel/game-art/MurderMystery.png")
