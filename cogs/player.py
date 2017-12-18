@@ -8,6 +8,7 @@ import datetime
 from math import floor
 import asyncio
 import ago
+from random import randint
 from hypixelbot import database, utility
 cacheTime = 3600
 
@@ -18,6 +19,7 @@ class PlayerCard:
     playerObject = None
     playerInfo = None
     ctx = None
+    randomQuery = 0
     footerText = 'Hypixel Bot | Made with \u2764 by Snuggle' # \u2764 is a heart symbol.
     rankColours = {'MVP': 0x55FFFF, 'VIP': 0x55FF55, 'MVP+': 0x55FFFF, 'VIP+': 0x55FF55, 'Non': 0xAAAAAA, 'Helper': 0x5555FF, 'Moderator': 0x00AA00, 'Admin': 0xFF5555, 'MCProHosting': 0xFF5555, 'Youtuber': 0xFFAA00, 'Build Team': 0x00AAAA, 'Owner': 0xFF5555, 'None': 0xAAAAAA, 'Mixer': 0x00AAAA}
     dataItems = ['karma', 'firstLogin', 'lastLogin', 'mcVersionRp', 'networkExp', 'displayName', 'rank', 'networkLevel', 'socialMedia']
@@ -40,7 +42,7 @@ class PlayerCard:
         embedObject.add_field(name=f"Network Experience", value=f"`{humanize.intword(self.playerInfo['networkExp'])}`", inline=True)
         embedObject.add_field(name=f"Known Usernames", value=f"```python\n{knownAliases[:1024]}```", inline=True)
 
-        embedObject.set_thumbnail(url=f"https://visage.surgeplay.com/bust/{self.playerObject.UUID}")
+        embedObject.set_thumbnail(url=f"https://visage.surgeplay.com/bust/{self.playerObject.UUID}?v={self.randomQuery}")
         embedObject.set_footer(text=f"{self.footerText}", icon_url=self.bot.user.avatar_url)
         await messageObject.edit(embed=embedObject)
         await messageObject.add_reaction("\U00002B05")
@@ -67,7 +69,7 @@ class PlayerCard:
             else:
                 embedObject.add_field(name=f"{social.title()}", value=f"`{socialMedia[social]}`", inline=True)
 
-        embedObject.set_thumbnail(url=f"https://visage.surgeplay.com/bust/{self.playerObject.UUID}")
+        embedObject.set_thumbnail(url=f"https://visage.surgeplay.com/bust/{self.playerObject.UUID}?v={self.randomQuery}")
         embedObject.set_footer(text=f"{self.footerText}", icon_url=self.bot.user.avatar_url)
         await messageObject.edit(embed=embedObject)
         await messageObject.add_reaction("\U00002B05")
@@ -112,8 +114,8 @@ class PlayerCard:
                     except KeyError:
                         embedObject.add_field(name=f"{statistic[0]}", value=f"`·0`")
 
-                embedObject.set_thumbnail(url=f"https://visage.surgeplay.com/bust/{self.playerObject.UUID}")
-                embedObject.set_image(url=reaction.emoji.url)
+                embedObject.set_thumbnail(url=f"https://visage.surgeplay.com/bust/{self.playerObject.UUID}?v={self.randomQuery}")
+                embedObject.set_image(url="https://hypixel.net/styles/hypixel-uix/hypixel/game-art/MurderMystery.png")
                 embedObject.set_footer(text=f"{self.footerText}", icon_url=self.bot.user.avatar_url)
                 await messageObject.edit(embed=embedObject)
                 await messageObject.add_reaction("\U00002B05")
@@ -134,11 +136,12 @@ class PlayerCard:
     async def gameStats(self, messageObject, ctx):
         embedObject = embedObject = discord.Embed(color=self.playerInfo['playerColour'], title=f"{self.playerInfo['playerTitle']} {self.playerInfo['displayName']} > Games", \
         description="Please select a game from the list below!", url=f"https://hypixel.net/player/{self.playerInfo['displayName']}")
-        for game in gameStats:
-            print(game)
-            print(gameStats[game]['icon_uri'])
-            embedObject.add_field(name=f"{gameStats[game]['icon_uri']}", value=game)
-        embedObject.set_thumbnail(url=f"https://visage.surgeplay.com/bust/{self.playerObject.UUID}")
+        #for game in gameStats:
+        #    print(game)
+        #    print(gameStats[game]['icon_uri'])
+        #    embedObject.add_field(name=f"{gameStats[game]['icon_uri']}", value=game)
+        embedObject.set_image(url="https://i.imgur.com/1Q313xo.png")
+        embedObject.set_thumbnail(url=f"https://visage.surgeplay.com/bust/{self.playerObject.UUID}?v={self.randomQuery}")
         embedObject.set_footer(text=f"{self.footerText}", icon_url=self.bot.user.avatar_url)
 
         await messageObject.edit(embed=embedObject)
@@ -193,6 +196,7 @@ class PlayerCard:
         if edit is False:
             await ctx.channel.trigger_typing()
         hypixel.setCacheTime(cacheTime)
+        self.randomQuery = randint(0, 9999)
         try:
             startTime = time()
 
@@ -277,7 +281,7 @@ class PlayerCard:
                 embedObject.add_field(name="Forums", value=f"`Unlinked`")
             else:
                 embedObject.add_field(name="Forums", value=f"[View]({forumsLink}) forum account.")
-            embedObject.set_image(url=f"https://visage.surgeplay.com/full/256/{self.playerInfo['displayName']}") # TODO: Random number for caching
+            embedObject.set_image(url=f"https://visage.surgeplay.com/full/256/{self.playerInfo['displayName']}?v={self.randomQuery}")
 
             if playerTitle in rankMap:
                 if playerTitle == "MVP+":
