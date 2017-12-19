@@ -21,7 +21,7 @@ class PlayerCard:
     ctx = None
     randomQuery = 0
     footerText = 'Hypixel Bot | Made with \u2764 by Snuggle' # \u2764 is a heart symbol.
-    rankColours = {'MVP': 0x55FFFF, 'VIP': 0x55FF55, 'MVP+': 0x55FFFF, 'VIP+': 0x55FF55, 'Non': 0xAAAAAA, 'Helper': 0x5555FF, 'Moderator': 0x00AA00, 'Admin': 0xFF5555, 'MCProHosting': 0xFF5555, 'Youtuber': 0xFFAA00, 'Build Team': 0x00AAAA, 'Owner': 0xFF5555, 'None': 0xAAAAAA, 'Mixer': 0x00AAAA}
+    rankColours = {'MVP': 0x55FFFF, 'VIP': 0x55FF55, 'MVP+': 0x55FFFF, 'MVP++': 0xFFAA00, 'VIP+': 0x55FF55, 'Non': 0xAAAAAA, 'Helper': 0x5555FF, 'Moderator': 0x00AA00, 'Admin': 0xFF5555, 'MCProHosting': 0xFF5555, 'YouTube': 0xFF5555, 'Build Team': 0x00AAAA, 'Owner': 0xFF5555, 'None': 0xAAAAAA, 'Mixer': 0x00AAAA}
     dataItems = ['karma', 'firstLogin', 'lastLogin', 'mcVersionRp', 'networkExp', 'displayName', 'rank', 'networkLevel', 'socialMedia']
     socialLinks = ['YOUTUBE', 'TWITTER', 'HYPIXEL', 'DISCORD', 'MIXER']
     deleteTime = 60.0
@@ -35,7 +35,7 @@ class PlayerCard:
 
         i = 1; knownAliases = ""
         for alias in self.playerObject.JSON['knownAliases']:
-            knownAliases = knownAliases + f"\n{i} | {alias}"
+            knownAliases = knownAliases + f"\n{i} - {alias}"
             i += 1
 
         embedObject.add_field(name=f"Minecraft UUID", value=f"`{self.playerObject.UUID}`", inline=True)
@@ -286,13 +286,13 @@ class PlayerCard:
             embedObject.set_image(url=f"https://visage.surgeplay.com/full/256/{self.playerInfo['displayName']}?v={self.randomQuery}")
 
             if playerTitle in rankMap:
-                if playerTitle == "MVP+":
+                if playerTitle == "MVP+" or playerTitle == "MVP++":
                     if 'rankPlusColor' in self.playerObject.JSON:
                         rankPlusColor = self.playerObject.JSON['rankPlusColor']
                     else:
                         rankPlusColor = 'RED'
                     print(rankPlusColor)
-                    thumbnailURL = rankMap["MVP+"][rankPlusColor]
+                    thumbnailURL = rankMap[playerTitle][rankPlusColor]
                 else:
                     thumbnailURL = rankMap[playerTitle]
                     if thumbnailURL is None:

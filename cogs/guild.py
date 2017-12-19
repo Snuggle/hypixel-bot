@@ -90,7 +90,7 @@ class GuildCog:
                 guildMembers[typeOfMember] = str(guildMembers[typeOfMember]).replace('\'', '').replace('[', '').replace(']', '')
                 # Convert each list in guildMembers to a string.
 
-            embedObject = discord.Embed(color=0xCDA040, title=guildName, description=f"\u200B{guildDescription}", url=guildPageURL)
+            embedObject = discord.Embed(color=0xCDA040, title=guildName, description=f"\u200B{guildDescription[:2000]}", url=guildPageURL)
             embedObject.add_field(name="Guild Master", value=f"`\u200B{guildMembers['GUILDMASTER'][:2045]}`", inline=False)
             embedObject.add_field(name="Officers", value=f"`\u200B{guildMembers['OFFICER'][:2045]}`", inline=False)
             embedObject.add_field(name="Members", value=f"`\u200B{guildMembers['MEMBER'][:1021]}`", inline=False)
