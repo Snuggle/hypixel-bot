@@ -291,7 +291,7 @@ class PlayerCard:
                         rankPlusColor = self.playerObject.JSON['rankPlusColor']
                     else:
                         rankPlusColor = 'RED'
-                    print(rankPlusColor)
+                    #print(rankPlusColor)
                     thumbnailURL = rankMap[playerTitle][rankPlusColor]
                 else:
                     thumbnailURL = rankMap[playerTitle]
@@ -310,13 +310,13 @@ class PlayerCard:
             else:
                 print("Trying to send")
                 messageObject = await ctx.send(content=None, embed=embedObject, delete_after=self.deleteTime)
-                print(messageObject)
+                #print(messageObject)
             playerInfo = self.playerInfo
             await database.populatePlayer(ctx, playerInfo)
             print(f" > Replied in {round(time()-startTime, 2)}s.")
 
 
-            print(messageObject)
+            #print(messageObject)
             await self.do_buttons(messageObject, ctx)
         except hypixel.PlayerNotFoundException:
             print(f" > Player not found.")

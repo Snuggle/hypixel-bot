@@ -68,7 +68,7 @@ class OwnerCog:
     @commands.command(name='identify')
     @commands.is_owner()
     async def identify(self, ctx):
-        embedObject = discord.Embed(color=0xCDA040, title="Identity Verification", description=f"This is Snuggle's actual Discord account. They are a moderator for the Hypixel Network as well as my creator.\nPlease view https://hypixel.net/player/Snuggle for more information.")
+        embedObject = discord.Embed(color=0xCDA040, title="Identity Verification", description=f"This is <@201635058405212160>'s actual Discord account. They are a moderator for the Hypixel Network as well as the creator of this bot.\n\nPlease view https://hypixel.net/player/Snuggle for more information.")
         await ctx.send(content=None, embed=embedObject, delete_after=10.0)
 
     @commands.command(name='test')

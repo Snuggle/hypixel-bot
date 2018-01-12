@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 __description__ = """ Unofficial Hypixel Discord Bot, Made by Snuggle. """
-__version__ = '0.0.3'
+__version__ = '2017-12-25'
 
 import discord
 from discord.ext import commands
@@ -15,7 +15,7 @@ from hypixelbot import utility
 keys = open("keys.ini", "r").readlines() # Get keys and set them all from file.
 hypixelKeys = [keys[0].replace('\n', '')]
 hypixel.setKeys(hypixelKeys) # Set Hypixel-API key.
-bot_token = keys[2]
+bot_token = keys[1].replace('\n', '')
 #dbltoken = keys[2]
 
 prefix = ['hypixel-', 'Hypixel-']
@@ -30,6 +30,15 @@ valid_commands = ['hypixel-player',
                   'hypixel-guild',
                   'hypixel-link',
                   'hypixel-help']
+
+# def deleteTime():
+#     if channel is command channel:
+#           return False
+#     else:
+#           return 60.0
+#
+# get deleteTime()
+
 
 bot = commands.AutoShardedBot(command_prefix=prefix, description=__description__, shard_count=3, shard_ids=[0, 1, 2]) # Create Discord bot.
 
