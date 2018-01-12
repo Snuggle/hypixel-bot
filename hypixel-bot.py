@@ -91,7 +91,8 @@ async def on_command_error(ctx, error):
 
 @bot.event
 async def on_ready(): # When the bot is ready, do the following...
-    print(f"Hello, there! I am {bot.user.name} v{__version__}!")
+    print(f"Hello, there! I am {bot.user.name}.")
+    print(f"I was last updated on {__version__}.")
     await bot.change_presence(game=discord.Game(name='do hypixel-help!', type=1, url='https://twitch.tv/snugglysnuggle')) #Change bot's status to "Streaming"
     print(f"Please wait while I load my extensions: ", end='') # Print to console that the bot is online.
 
@@ -109,7 +110,7 @@ async def on_ready(): # When the bot is ready, do the following...
         print("You cannot import me, silly.")
         exit()
     print(']')
-    print(f"Using hypixel.py v{hypixel.__version__}.")
+    print(f"Version Information: python - v{sys.version.split(' ')[0]} | hypixel.py - v{hypixel.__version__} | discord.py - {discord.__version__}")
     print('Successfully started up and listening for commands...\n')
 
 @bot.event
