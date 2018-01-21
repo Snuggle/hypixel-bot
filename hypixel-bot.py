@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 __description__ = """ Unofficial Hypixel Discord Bot, Made by Snuggle. """
-__version__ = '2017-12-25'
+__version__ = '2018-01-12'
+# Because this project isn't designed to be a dependency, I feel like a date-
+# based version string is more useful than a conventional one.
 
 import discord
 from discord.ext import commands
 import traceback
 import sys
 import time
-import hypixel # Import all the things necessary
+import hypixel # My hypixel.py library.
 import difflib
 from hypixelbot import utility
 #from dbl import DBLClient
@@ -26,8 +28,8 @@ startup_extensions = ('cogs.player', # These are the extensions that will be loa
                       'cogs.help',
                       'cogs.guild')
 
-valid_commands = ['hypixel-player',
-                  'hypixel-guild',
+valid_commands = ['hypixel-player', # The closest command in this list will be
+                  'hypixel-guild',  # suggested if the user inputs an unknown command.
                   'hypixel-link',
                   'hypixel-help']
 
@@ -40,10 +42,10 @@ valid_commands = ['hypixel-player',
 # get deleteTime()
 
 
-bot = commands.AutoShardedBot(command_prefix=prefix, description=__description__, shard_count=3, shard_ids=[0, 1, 2]) # Create Discord bot.
+bot = commands.AutoShardedBot(command_prefix=prefix, description=__description__, shard_count=1) # Create Discord bot.
 
 @bot.event
-async def on_command(ctx):
+async def on_command(ctx): # For every single command, delete the user's message and print
     await utility.soft_delete(ctx)
     try:
         print(f"#{ctx.author.guild.shard_id} | {ctx.author} > {ctx.message.content}", end='')
