@@ -295,8 +295,8 @@ class PlayerCard:
                     thumbnailURL = rankMap[playerTitle][rankPlusColor]
                 else:
                     thumbnailURL = rankMap[playerTitle]
-                    if thumbnailURL is None:
-                        thumbnailURL = rankMap[playerRank]
+            if thumbnailURL is None:
+                thumbnailURL = rankMap[playerRank]
 
             displayName = self.playerInfo['displayName'].replace('\\', '')
             if displayName == "Snuggle" or displayName == "Pixiest":
