@@ -1,5 +1,6 @@
 from discord.ext import commands
 import discord
+import os
 from hypixelbot import utility
 
 class HelpCog:
@@ -14,7 +15,7 @@ class HelpCog:
         description = ('Hey, there! This is a small unofficial Hypixel Discord bot made by Snuggle.\n\nIt can be pretty buggy at times. '
                         'If you experience any, please message me on [Twitter](https://twitter.com/SprinkIy).\n'
                         'To use this bot on your own Discord server, [click here](https://sprinkly.net/hypixelbot).\n\n'
-                        f'I am currently a member of `{len(self.bot.guilds)}` servers in total and I was last updated on `{hypixelbot.__version__}`') #I have also recieved `{}` commands since 2017-06-30.')
+                        f'I am currently a member of `{len(self.bot.guilds)}` servers in total and I was last updated on `2018-02-04`') #I have also recieved `{}` commands since 2017-06-30.')
 
         embedObject = discord.Embed(color=0xCDA040, title='Snuggle\'s Unofficial Hypixel Bot', description=description, url="https://sprinkly.net/hypixelbot")
         embedObject.set_image(url="http://i.imgur.com/OdU9KJM.png")
