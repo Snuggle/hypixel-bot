@@ -15,7 +15,7 @@ class HelpCog:
         description = ('Hey, there! This is a small unofficial Hypixel Discord bot made by Snuggle, a moderator for the server. `hypixel-player Snuggle`\n\nYou might see the occasional bug or broken features. '
                         'If you experience any issues, please message me on [Twitter](https://twitter.com/SprinkIy).\n\n'
                         'To use this bot on your own Discord server, please visit https://sprinkly.net/hypixelbot.\n\n'
-                        f'I am currently a member of `{len(self.bot.guilds)}` servers in total and I was last updated on `{__version__}`. Made ') #I have also recieved `{}` commands since 2017-06-30.')
+                        f'I am currently a member of `{len(self.bot.guilds)}` servers in total and I was last updated on `{__version__}`.') #I have also recieved `{}` commands since 2017-06-30.')
 
         embedObject = discord.Embed(color=0xCDA040, title='Snuggle\'s Unofficial Hypixel Bot', description=description, url="https://sprinkly.net/hypixelbot")
         embedObject.set_image(url="https://i.imgur.com/xe5AjV0.png")
