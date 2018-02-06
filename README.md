@@ -1,5 +1,5 @@
 <p align="center">
-   <a href="https://hypixel.net" style="text-decoration: none">
+   <a href="https://sprinkly.net/hypixelbot" style="text-decoration: none">
       <img src="https://i.imgur.com/8MjYLF1.png">
    </a>
 </p>
