@@ -285,6 +285,7 @@ class PlayerCard:
                 embedObject.add_field(name="Forums", value=f"[View]({forumsLink}) forum account.")
             embedObject.set_image(url=f"https://visage.surgeplay.com/full/256/{self.playerInfo['displayName']}?v={self.randomQuery}")
 
+            thumbnailURL = rankMap[playerRank['rank']]
             if playerTitle in rankMap:
                 if playerTitle == "MVP+" or playerTitle == "MVP++":
                     if 'rankPlusColor' in self.playerObject.JSON:
@@ -295,8 +296,6 @@ class PlayerCard:
                     thumbnailURL = rankMap[playerTitle][rankPlusColor]
                 else:
                     thumbnailURL = rankMap[playerTitle]
-            if thumbnailURL is None:
-                thumbnailURL = rankMap[playerRank]
 
             displayName = self.playerInfo['displayName'].replace('\\', '')
             if displayName == "Snuggle" or displayName == "Pixiest":
