@@ -12,7 +12,6 @@ cacheTime = 86400
 guildCache = {}
 
 class GuildCog:
-    footerText = 'Hypixel Bot | Made with \u2764 by Snuggle' # \u2764 is a heart symbol.
     deleteTime = 60.0
 
     def __init__(self, bot):
@@ -61,7 +60,7 @@ class GuildCog:
             if guildID is None:
                 print(f" > Guild not found.")
                 embedObject = discord.Embed(color=0x800000, description=f"{playerInfo['displayName']} is not in a guild!", url="https://sprinkly.net/hypixelbot")
-                embedObject.set_footer(text=self.footerText, icon_url=self.bot.user.avatar_url)
+                embedObject.set_footer(text=utility.footerText, icon_url=self.bot.user.avatar_url)
                 await ctx.send(content=None, embed=embedObject, delete_after=self.deleteTime)
 
                 return False
@@ -100,14 +99,14 @@ class GuildCog:
             if guildBanner.startswith('https://hypixel.net/data/guild_headers/'):
                 embedObject.set_image(url=guildBanner)
 
-            embedObject.set_footer(text=f'{self.footerText} | {ctx.author}', icon_url=self.bot.user.avatar_url)
+            embedObject.set_footer(text=f'{utility.footerText} | {ctx.author}', icon_url=self.bot.user.avatar_url)
             messageObject = await ctx.send(content=None, embed=embedObject, delete_after=self.deleteTime)
             print(f" > Replied in {round(time()-startTime, 2)}s.")
 
         except hypixel.PlayerNotFoundException:
             print(f" > Player not found.")
             embedObject = discord.Embed(color=0x800000, description='Player not found.', url="https://sprinkly.net/hypixelbot")
-            embedObject.set_footer(text=self.footerText, icon_url=self.bot.user.avatar_url)
+            embedObject.set_footer(text=utility.footerText, icon_url=self.bot.user.avatar_url)
             await ctx.send(content=None, embed=embedObject, delete_after=self.deleteTime)
 
 

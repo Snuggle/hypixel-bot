@@ -4,12 +4,12 @@ import asyncio
 import hypixel
 import string
 from random import choice
+from hypixelbot import utility
 
 from hypixelbot import database, utility
 
 class LinkCog:
     deleteTime = 120.0
-    footerText = 'Hypixel Bot | Made with \u2764 by Snuggle' # \u2764 is a heart symbol.
 
     def __init__(self, bot):
         self.bot = bot

@@ -1,3 +1,11 @@
+import datetime
+import humanize
+
+def getRunningTime():
+    return (humanize.naturaltime(datetime.datetime.now() - datetime.datetime.fromtimestamp(1489449600)))
+
+footerText = f'Hypixel Bot | Made with \u2764 by Snuggle, {getRunningTime()}'
+
 async def soft_delete(ctx):
     try:
         if 'command' not in ctx.channel.name:

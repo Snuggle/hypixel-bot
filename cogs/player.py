@@ -20,7 +20,6 @@ class PlayerCard:
     playerInfo = None
     ctx = None
     randomQuery = 0
-    footerText = 'Hypixel Bot | Made with \u2764 by Snuggle' # \u2764 is a heart symbol.
     rankColours = {'MVP': 0x55FFFF, 'VIP': 0x55FF55, 'MVP+': 0x55FFFF, 'MVP++': 0xFFAA00, 'VIP+': 0x55FF55, 'Non': 0xAAAAAA, 'Helper': 0x5555FF, 'Moderator': 0x00AA00, 'Admin': 0xFF5555, 'MCProHosting': 0xFF5555, 'YouTube': 0xFF5555, 'Build Team': 0x00AAAA, 'Owner': 0xFF5555, 'None': 0xAAAAAA, 'Mixer': 0x00AAAA}
     dataItems = ['karma', 'firstLogin', 'lastLogin', 'mcVersionRp', 'networkExp', 'displayName', 'rank', 'networkLevel', 'socialMedia']
     socialLinks = ['YOUTUBE', 'TWITTER', 'HYPIXEL', 'DISCORD', 'MIXER']
@@ -43,7 +42,7 @@ class PlayerCard:
         embedObject.add_field(name=f"Known Usernames", value=f"```python\n{knownAliases[:1024]}```", inline=True)
 
         embedObject.set_thumbnail(url=f"https://visage.surgeplay.com/bust/{self.playerObject.UUID}?v={self.randomQuery}")
-        embedObject.set_footer(text=f"{self.footerText}", icon_url=self.bot.user.avatar_url)
+        embedObject.set_footer(text=f"{utility.footerText}", icon_url=self.bot.user.avatar_url)
         await messageObject.edit(embed=embedObject)
         await messageObject.add_reaction("\U00002B05")
 
@@ -70,7 +69,7 @@ class PlayerCard:
                 embedObject.add_field(name=f"{social.title()}", value=f"`{socialMedia[social]}`", inline=True)
 
         embedObject.set_thumbnail(url=f"https://visage.surgeplay.com/bust/{self.playerObject.UUID}?v={self.randomQuery}")
-        embedObject.set_footer(text=f"{self.footerText}", icon_url=self.bot.user.avatar_url)
+        embedObject.set_footer(text=f"{utility.footerText}", icon_url=self.bot.user.avatar_url)
         await messageObject.edit(embed=embedObject)
         await messageObject.add_reaction("\U00002B05")
 
@@ -118,7 +117,7 @@ class PlayerCard:
 
                 embedObject.set_thumbnail(url=f"https://visage.surgeplay.com/bust/{self.playerObject.UUID}?v={self.randomQuery}")
                 embedObject.set_image(url="https://hypixel.net/styles/hypixel-uix/hypixel/game-art/MurderMystery.png")
-                embedObject.set_footer(text=f"{self.footerText}", icon_url=self.bot.user.avatar_url)
+                embedObject.set_footer(text=f"{utility.footerText}", icon_url=self.bot.user.avatar_url)
                 await messageObject.edit(embed=embedObject)
                 await messageObject.add_reaction("\U00002B05")
 
@@ -144,7 +143,7 @@ class PlayerCard:
         #    embedObject.add_field(name=f"{gameStats[game]['icon_uri']}", value=game)
         embedObject.set_image(url="https://i.imgur.com/1Q313xo.png")
         embedObject.set_thumbnail(url=f"https://visage.surgeplay.com/bust/{self.playerObject.UUID}?v={self.randomQuery}")
-        embedObject.set_footer(text=f"{self.footerText}", icon_url=self.bot.user.avatar_url)
+        embedObject.set_footer(text=f"{utility.footerText}", icon_url=self.bot.user.avatar_url)
 
         await messageObject.edit(embed=embedObject)
 
@@ -302,7 +301,7 @@ class PlayerCard:
                 thumbnailURL = rankMap[displayName]
 
             embedObject.set_thumbnail(url=thumbnailURL)
-            embedObject.set_footer(text=f'{self.footerText} | {ctx.author}', icon_url=self.bot.user.avatar_url)
+            embedObject.set_footer(text=f'{utility.footerText} | {ctx.author}', icon_url=self.bot.user.avatar_url)
             if edit is True:
                 print("Trying to edit")
                 await messageObject.edit(content=None, embed=embedObject, delete_after=self.deleteTime)
@@ -320,7 +319,7 @@ class PlayerCard:
         except hypixel.PlayerNotFoundException:
             print(f" > Player not found.")
             embedObject = discord.Embed(color=0x800000, description='Player not found.', url="https://sprinkly.net/hypixelbot")
-            embedObject.set_footer(text=self.footerText, icon_url=self.bot.user.avatar_url)
+            embedObject.set_footer(text=utility.footerText, icon_url=self.bot.user.avatar_url)
             await ctx.send(content=None, embed=embedObject, delete_after=self.deleteTime)
 
 
