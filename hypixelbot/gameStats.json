@@ -13,7 +13,7 @@
       ["Bed Wars Coins", "humanize.intcomma(stats['coins']) + ' \\U0001F4B8'"]
     ],
     "APIname": "Bedwars",
-    "description": "In Bed Wars, you and up to 3 teammates battle for control of the Dreamscape.\n\nGather resources, defend your base, support your teammates and eliminate all enemy beds and players to win!",
+    "description": "In Bed Wars, you and up to 3 teammates battle for control of the Dreamscape.\n\nGather resources, defend your base, support your teammates and eliminate all enemy beds and players to win! 🛏️",
     "icon_id": 386231839213223941,
     "icon_uri": "<:BedWars:386231839213223941>",
     "game_art": "https://hypixel.net/styles/hypixel-uix/hypixel/game-art/BedWars.png"
@@ -28,7 +28,7 @@
       ["SkyWars Coins", "humanize.intcomma(stats['coins']) + ' \\U0001F4B8'"]
     ],
     "APIname": "SkyWars",
-    "description": "In Skywars, you're on an island and fighting for your life! Stay alive and beware, the depths of the void below.",
+    "description": "In Skywars, you're on an island and fighting for your life! Stay alive and beware, the depths of the void loom below...",
     "icon_id": 386231839670403082,
     "icon_uri": "<:SkyWars:386231839670403082>",
     "game_art": "https://hypixel.net/styles/hypixel-uix/hypixel/game-art/Skywars.png"
@@ -50,7 +50,7 @@
       ["Murder Mystery Coins", "humanize.intcomma(stats['coins']) + ' \\U0001F4B8'"]
     ],
     "APIname": "MurderMystery",
-    "description": "Players take on the role of either Murderer, Detective or Innocent. The Murderer must be sneaky and try to kill as many people as he can without being caught or killed. The detective and innocents must work together to protect each other and try to figure out who the murderer is.",
+    "description": "Players take on the role of either Murderer, Detective or Innocent. The Murderer must be sneaky and try to kill as many people as he can without being caught or killed. The detective and innocents must work together to protect each other and try to figure out who the murderer is. 🔪💀",
     "icon_id": 386231839720865802,
     "icon_uri": "<:MurderMystery:386231839720865802>",
     "game_art": "https://hypixel.net/styles/hypixel-uix/hypixel/game-art/MurderMystery.png"
@@ -69,7 +69,7 @@
      ["TNT Games Coins", "humanize.intcomma(stats['coins']) + ' \\U0001F4B8'"]
     ],
     "APIname": "TNTGames",
-    "description": "TNT Games is a gamemode about explosions!",
+    "description": "Do you like explosions? Everyone loves explosions. That's why everyone loves TNT Games! The perfect place for all you pyromaniacs. 💣🔥",
     "icon_id": 386231839825723393,
     "icon_uri": "<:TNTGames:386231839825723393>",
     "game_art": "https://hypixel.net/styles/hypixel-uix/hypixel/game-art/TNT.png"
