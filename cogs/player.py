@@ -116,7 +116,7 @@ class PlayerCard:
                         embedObject.add_field(name=f"{statistic[0]}", value=f"`Error`")
 
                 embedObject.set_thumbnail(url=f"https://visage.surgeplay.com/bust/{self.playerObject.UUID}?v={self.randomQuery}")
-                embedObject.set_image(url="https://hypixel.net/styles/hypixel-uix/hypixel/game-art/MurderMystery.png")
+                embedObject.set_image(url=gameStats[game]['game_art'])
                 embedObject.set_footer(text=f"{utility.footerText}", icon_url=self.bot.user.avatar_url)
                 await messageObject.edit(embed=embedObject)
                 await messageObject.add_reaction("\U00002B05")

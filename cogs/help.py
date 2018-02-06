@@ -33,7 +33,7 @@ class HelpCog:
 
         changeEmbedObject = discord.Embed(color=0xCDA040, description='**Changelog**\nAn archive of changes made is available here: https://pastebin.com/TxaNuAWA', url="https://sprinkly.net/hypixelbot")
         changeEmbedObject.add_field(name="Coming soon...", value="‣ Minecraft account linking (again)\n‣ Clean up code & open-source on my GitHub.\n‣ More gamemodes added!\n‣ Bug fixes! 🐛")
-        changeEmbedObject.add_field(name=f"Most recent update ({__version__})", value="• Fixed bug that stopped several users from viewing their own profile.\n• Added `hypixel-invite` command to make it easier for people to add me!\n• Created a snazzy banner.\n• Gave `hypixel-help` a new look. I hope you like it! c:")
+        changeEmbedObject.add_field(name=f"Most recent update ({__version__})", value="• Fixed bug that stopped several users from viewing their own profile.\n• Added `hypixel-invite` command to make it easier for people to add me!\n• Created a snazzy banner.\n• Gave `hypixel-help` a new look. I hope you like it! c:\n• Fixed image art for game statistics. Before it was only showing Murder Mystery's art. Woopsies! 😞")
         changeEmbedObject.set_footer(text=utility.footerText, icon_url=self.bot.user.avatar_url)
         try:
             secondEmbedObject = discord.Embed(color=0xCDA040, description=f"<@!{ctx.author.id}>, please check your direct messages!", url="https://sprinkly.net/hypixelbot")
