@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 __description__ = """ Unofficial Hypixel Discord Bot, Made by Snuggle. """
-__version__ = '2018-02-04'
+__version__ = '2018-02-06'
 # Because this project isn't designed to be used by anyone, I feel like a date-
 # based version string is more useful than a conventional one.
 
