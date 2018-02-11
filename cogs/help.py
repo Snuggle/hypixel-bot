@@ -1,4 +1,4 @@
-__version__ = '2018-02-06'
+__version__ = '2018-02-11'
 from discord.ext import commands
 import discord
 import os
