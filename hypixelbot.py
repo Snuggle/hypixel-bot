@@ -20,7 +20,7 @@ hypixel.setKeys(hypixelKeys) # Set Hypixel-API key.
 bot_token = keys[1].replace('\n', '')
 #dbltoken = keys[2]
 
-prefix = ['hypixel-', 'Hypixel-']
+prefix = ['hypixel-', 'Hypixel-', 'h-', 'H-']
 footerText = 'Hypixel Bot | Made with \u2764 by Snuggle' # \u2764 is a heart symbol.
 
 startup_extensions = ('cogs.player', # These are the extensions that will be loaded.
