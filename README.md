@@ -25,7 +25,7 @@ It was split into two separate projects - [hypixel.py](https://github.com/Snuggl
 
 ## gitmoji
 
-Please follow the gitmoji standards for identifying the purpose of a commit.
+Please follow the gitmoji standards for identifying the purpose of a commit. These aren't strict rules per se, but they're extremely useful for skimming over a bunch of commits.
 https://gitmoji.carloscuesta.me
 
-For example, if you are fixing a bug that affected Linux users - "🐛🐧 Fixed bug that scared penguins!"
+For example, if you are fixing a bug that affected Linux users - "🐛 🐧 | Fixed bug that scared penguins!"
