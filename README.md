@@ -10,8 +10,8 @@
 </p>
 <p align="center">
    <a href="https://snugg.ie/old/hypixelbot" style="text-decoration: none">
-      <img src="https://i.imgur.com/8MjYLF1.png">
       <i>View our website or add me to your server!</i>
+      <img src="https://i.imgur.com/8MjYLF1.png">
    </a>
 </p>
 
